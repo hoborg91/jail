@@ -1,0 +1,33 @@
+This document briefly describes the project development workflow.
+
+In general the project can be described as a set of dymanic linked libraries (DLL) written in the "C#" programming language. The DLLs are being compiled for different ".NET" platforms. They are being destributed as a "NuGet" package.
+
+1. Development.
+
+One should write a code in the "C#" programming language.
+
+The target platforms are specified in the "*.csproj" files in the "Project/PropertyGroup/TargetFrameworks" tag. Currently one cannot specify multiple platforms using the "Visual Studio" GUI; one should modify the "*.csproj" file manually.
+
+To tune the project to be published as a new version of the "NuGet" package one should modify the "Package" tab on the project settings page or modify the "*.csproj" file manually. At least the fields "Version", "PackageReleaseNotes" and "AssemblyVersion" must be modified. The "Version" and "AssemblyVersion" must be equal. The publish process itself is described in the "Delivery" section of the current document.
+
+1.1. Code standards.
+
+The solution contains the project with unit tests. One should aim the 100% test coverage.
+
+All public types and their members exposed to a client must contain XML documentation comments.
+
+All public methods (including constructors) must check their parameters.
+
+Every internal or public type should be placed in its own file.
+
+2. Source control.
+
+The source control system is "GIT". The main repository is hosted on the "GitHub" web site.
+
+3. Delivery.
+
+Clients can obtain the result DLLs via "NuGet" package manager. Currently the package with the DLLs is hosted on the "nuget.org" web site. The packages are being published automatically via the "ci.appveyor.com" web site which provides continuous integration and delivery capabilities.
+
+The project on the "ci.appveyor.com" web site must be configured in the following way.
+- The artifacts list must contain a "src\*\bin\Release\*.nupkg" path.
+- The deployment must be configured with the "NuGet" deployment provider and the appropriate API key suplied by the "nuget.org" web site.
