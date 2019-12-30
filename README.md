@@ -1,4 +1,4 @@
-# Just Another Infrastructure Library [![Build status](https://ci.appveyor.com/api/projects/status/thaf807e5s5jybwe?svg=true)](https://ci.appveyor.com/project/hoborg91/jail)
+# Just Another Infrastructure Library [![Build status](https://ci.appveyor.com/api/projects/status/thaf807e5s5jybwe?svg=true)](https://ci.appveyor.com/project/hoborg91/jail) [![Coverage Status](https://coveralls.io/repos/github/hoborg91/jail/badge.svg?branch=master)](https://coveralls.io/github/hoborg91/jail?branch=master)
 
 This is a set of C# projects containing some infrastructure classes and extension methods I use frequently in my works.
 I have decided to place it in a remote repository and make a NuGet package to be able to include it to every new project I need.

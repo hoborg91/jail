@@ -3,17 +3,17 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.0.0.1</Version>
+    <Version>0.0.0.2</Version>
     <Authors>George Minashin</Authors>
     <Company />
-    <Description>Gives some useful infrastructure classes.</Description>
-    <PackageLicenseUrl></PackageLicenseUrl>
-    <PackageProjectUrl></PackageProjectUrl>
+    <Description>Just Another Infrastructure Library. Facilitates some interesting design and architecture practices.</Description>
+    <PackageLicenseUrl>https://github.com/hoborg91/jail/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/hoborg91/jail</PackageProjectUrl>
     <PackageIconUrl></PackageIconUrl>
     <PackageTags>infrastructure common design architecture</PackageTags>
     <Copyright>Copyright 2019</Copyright>
     <PackageReleaseNotes></PackageReleaseNotes>
-    <AssemblyVersion>0.0.0.1</AssemblyVersion>
+    <AssemblyVersion>0.0.0.2</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
