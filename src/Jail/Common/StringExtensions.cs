@@ -1,6 +1,9 @@
 ﻿using System;
 
 namespace Jail.Common {
+    /// <summary>
+    /// Extension method for strings.
+    /// </summary>
     public static class StringExtensions {
         /// <summary>
         /// Indicates whether a specified string is null, empty, 

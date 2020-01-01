@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Jail.Common {
+    /// <summary>
+    /// Extensions methods for dictionaries and collections of dictionaries.
+    /// </summary>
     public static class DictionaryExtensions {
         /// <summary>
         /// Defines what is happening when two equal keys are discovered.
@@ -94,6 +97,12 @@ namespace Jail.Common {
             return result;
         }
 
+        /// <summary>
+        /// If the given dictionary contains the given key then this method 
+        /// modifies the corresponding value according to the specified 
+        /// <paramref name="modifier" />. Otherwise this method adds the 
+        /// given value to the dictionary.
+        /// </summary>
         public static TValue AddOrModify<TKey, TValue>(
             this IDictionary<TKey, TValue> dictionary, 
             TKey key,

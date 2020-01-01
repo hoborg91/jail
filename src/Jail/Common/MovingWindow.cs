@@ -50,6 +50,8 @@ namespace Jail.Common {
                 ? throw new ArgumentNullException(nameof(sequence))
                 : sequence.GetEnumerator();
         }
+
+        /// <inheritdoc />
         public IMovingWindow<T> ExtendTo(IEnumerable<T> sequence)
         {
             if (sequence == null)
@@ -58,6 +60,7 @@ namespace Jail.Common {
             return this;
         }
 
+        /// <inheritdoc />
         public T[] GetSnapshot()
         {
             lock (this._chest) {
@@ -70,6 +73,7 @@ namespace Jail.Common {
             }
         }
 
+        /// <inheritdoc />
         public bool IsExhausted()
         {
             lock (this._chest)
@@ -97,6 +101,7 @@ namespace Jail.Common {
             return false;
         }
 
+        /// <inheritdoc cref="Object.ToString" />
         public override string ToString() {
             return string.Join(" ", this._accumulator
                 .Select(i => i?.ToString() ?? "null")

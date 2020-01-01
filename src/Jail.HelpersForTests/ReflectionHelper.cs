@@ -9,8 +9,7 @@ namespace Jail.HelpersForTests {
         /// If the constructor of the given class with the given arguments is absent then 
         /// throws a <see cref="MissingConstructorException"/> object.
         /// </summary>
-        /// <param name="typeName">The name of the necessary class.</param>
-        /// <param name="typeNamespace">The namespace of the necessary class.</param>
+        /// <param name="type">The type which instance is to be constructed.</param>
         /// <param name="constructorArguments">List of constructor arguments.</param>
         public TAbstraction New<TAbstraction>(
             Type type,

@@ -5,15 +5,14 @@ using Jail.Design.Railway.Static;
 using Jail.Design.Annotations;
 
 namespace Jail.Design.Railway {
-    /// <summary>
-    /// Represents a factory for the <see cref="IResultOrError{TResult}" /> 
-    /// and <see cref="ILoggingResultOrError{TResult, TLogEntry}"/> types.
-    /// </summary>
+    /// <inheritdoc cref="IRailway" />
     public sealed class Railway : IRailway {
+        /// <inheritdoc />
         public IResultOrError<TResult> Success<TResult>(TResult result) {
             return ResultOrError.Success(result);
         }
 
+        /// <inheritdoc />
         public ILoggingResultOrError<TResult, TLogEntry> Success<TResult, TLogEntry>(
             TResult result,
             IReadOnlyList<TLogEntry> log
@@ -41,6 +40,7 @@ namespace Jail.Design.Railway {
             return ResultOrError.Begin(code);
         }
 
+        /// <inheritdoc />
         public IResultOrError<IReadOnlyList<TResult>> Begin<TItem, TResult>(
             IEnumerable<TItem> collection,
             Func<TItem, IResultOrError<TResult>> action
@@ -48,12 +48,14 @@ namespace Jail.Design.Railway {
             return ResultOrError.Begin(collection, action);
         }
 
+        /// <inheritdoc />
         public IResultOrError<T> BeginAndCompose<T>(
             Expression<Func<T>> constructingExpression
         ) {
             return ResultOrError.BeginAndCompose(constructingExpression);
         }
 
+        /// <inheritdoc />
         public IResultOrError<TResult> Fail<TResult>(
             string errorMessage,
             [CanBeNull]Exception catchedException = null
@@ -61,6 +63,7 @@ namespace Jail.Design.Railway {
             return ResultOrError.Fail<TResult>(errorMessage, catchedException);
         }
 
+        /// <inheritdoc />
         public ILoggingResultOrError<TResult, TLogEntry> Fail<TResult, TLogEntry>(
             IReadOnlyList<TLogEntry> log,
             string errorMessage,

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using Jail.Design.Internal;
 using Jail.Design.Annotations;
-using Jail.Design.Railway;
 
 namespace Jail.Design.Railway.Static {
     /// <summary>
@@ -15,6 +14,11 @@ namespace Jail.Design.Railway.Static {
     /// is the <see cref="IRailway"/> type.
     /// </summary>
     public static class ResultOrError {
+        /// <summary>
+        /// A convinient <see cref="IRailway"/>-world enter point when the 
+        /// <see cref="ResultOrError.ToResultOrError{TResult}(TResult)"/> 
+        /// method is not available.
+        /// </summary>
         public static IResultOrError<TResult> Success<TResult>(TResult result) {
             return new Roe<TResult>(result);
         }
@@ -39,6 +43,11 @@ namespace Jail.Design.Railway.Static {
             return code();
         }
 
+        /// <summary>
+        /// A convinient <see cref="IRailway"/>-world enter point when the code 
+        /// contains many lines and the <see cref="ResultOrError.ToResultOrError{TResult, TLogEntry}(TResult)"/> 
+        /// method is not available.
+        /// </summary>
         public static IResultOrError<IReadOnlyList<TResult>> Begin<TItem, TResult>(
             IEnumerable<TItem> collection,
             Func<TItem, IResultOrError<TResult>> action
@@ -70,6 +79,10 @@ namespace Jail.Design.Railway.Static {
             );
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IResultOrError{TResult}" /> type
+        /// with the given error message and exception.
+        /// </summary>
         public static IResultOrError<TResult> Fail<TResult>(
             string errorMessage,
             [CanBeNull]Exception catchedException = null
@@ -80,6 +93,10 @@ namespace Jail.Design.Railway.Static {
             );
         }
 
+    /// <summary>
+        /// Initializes a new instance of the <see cref="IResultOrError{TResult}" /> type
+        /// with the given error message and exception.
+        /// </summary>
         public static ILoggingResultOrError<TResult, TLogEntry> Fail<TResult, TLogEntry>(
             IReadOnlyList<TLogEntry> log,
             string errorMessage,
@@ -92,10 +109,16 @@ namespace Jail.Design.Railway.Static {
             );
         }
 
+        /// <summary>
+        /// Converts the given value to <see cref="IResultOrError{T}" />.
+        /// </summary>
         public static IResultOrError<TResult> ToResultOrError<TResult>(this TResult result) {
             return Success(result);
         }
 
+        /// <summary>
+        /// Converts the given value to <see cref="ILoggingResultOrError{TResult, TLogEntry}" />.
+        /// </summary>
         public static ILoggingResultOrError<TResult, TLogEntry> ToResultOrError<TResult, TLogEntry>(
             this TResult result
         ) {
@@ -105,6 +128,9 @@ namespace Jail.Design.Railway.Static {
             );
         }
 
+        /// <summary>
+        /// Converts the given value to <see cref="ILoggingResultOrError{TResult, TLogEntry}" />.
+        /// </summary>
         public static ILoggingResultOrError<TResult, TLogEntry> Success<TResult, TLogEntry>(
             TResult result,
             IReadOnlyList<TLogEntry> log
@@ -114,6 +140,10 @@ namespace Jail.Design.Railway.Static {
 
         #region Composing methods
 
+        /// <summary>
+        /// Initializes a new instance <see cref="IResultOrError{TResult}" /> 
+        /// using the given <paramref name="constructingExpression" />.
+        /// </summary>
         public static IResultOrError<T> BeginAndCompose<T>(
             Expression<Func<T>> constructingExpression
         ) {

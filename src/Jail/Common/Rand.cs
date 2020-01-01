@@ -12,14 +12,23 @@ namespace Jail.Common {
             return new Random(DateTime.Now.Millisecond);
         });
 
+        /// <summary>
+        /// Get next pseudo-random value.
+        /// </summary>
         public static int Next() {
             return Random.Value.Next();
         }
 
+        /// <summary>
+        /// Get next pseudo-random value.
+        /// </summary>
         public static int Next(int maxValue) {
             return Random.Value.Next(maxValue);
         }
 
+        /// <summary>
+        /// Get next pseudo-random value.
+        /// </summary>
         public static double NextDouble() {
             return Random.Value.NextDouble();
         }

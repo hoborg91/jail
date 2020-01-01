@@ -9,7 +9,7 @@ namespace Jail.Common {
     public static partial class EnumerableExtensions {
         /// <summary>
         /// Returns true if and only if the given collection contains no elements. 
-        /// Uses the <see cref="Enumerable.Any{T}" /> extension method.
+        /// Uses the <see cref="Enumerable.Any{T}(IEnumerable{T})" /> extension method.
         /// </summary>
         public static bool IsEmpty<T>(this IEnumerable<T> collection) {
             if (collection == null)

@@ -74,6 +74,7 @@ namespace Jail.Common {
             return this._queue.Dequeue();
         }
 
+        /// <inheritdoc cref="IEnumerable{T}.GetEnumerator" />
         public IEnumerator<T> GetEnumerator() {
             return this._queue.GetEnumerator();
         }
@@ -96,6 +97,7 @@ namespace Jail.Common {
 
         #region Override object
 
+        /// <inheritdoc cref="Object.ToString" />
         public override string ToString() {
             return this._queue.ToString();
         }

@@ -53,6 +53,9 @@ namespace Jail.Design.Railway {
             Func<TResult, IResultOrError<T>> continuation
         );
 
+        /// <summary>
+        /// Implements the specified action for each element of the given collection.
+        /// </summary>
         IResultOrError<IReadOnlyList<T>> OnSuccess<TItem, T>(
             IEnumerable<TItem> collection,
             Func<TItem, TResult, IResultOrError<T>> action

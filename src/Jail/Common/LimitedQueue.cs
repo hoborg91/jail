@@ -81,10 +81,12 @@ namespace Jail.Common {
 
         #region Implementation of IEnumerable<T>
 
+        /// <inheritdoc cref="IEnumerable.GetEnumerator" />
         public IEnumerator<T> GetEnumerator() {
             return this._queue.GetEnumerator();
         }
 
+        /// <inheritdoc cref="IEnumerable.GetEnumerator" />
         IEnumerator IEnumerable.GetEnumerator() {
             return this.GetEnumerator();
         }
@@ -93,6 +95,7 @@ namespace Jail.Common {
 
         #region Override object
 
+        /// <inheritdoc cref="Object.ToString" />
         public override string ToString() {
             return this._queue.ToString();
         }

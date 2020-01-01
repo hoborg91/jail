@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 
 namespace Jail.Math {
+    /// <summary>
+    /// Methods for calculations and other math.
+    /// </summary>
     public static class EnumerableExtensionsForMath {
         /// <summary>
         /// Returns the sum of the given numbers utilizing the Neumaier
