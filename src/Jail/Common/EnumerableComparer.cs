@@ -65,9 +65,19 @@ namespace Jail.Common {
             return (IEqualityComparer<IEnumerable<T>>)Comparers[type][mode];
         }
 
-        private class StrictEnumerableComparerOf<T> : IEqualityComparer<IEnumerable<T>> {
+        internal class StrictEnumerableComparerOf<T> : IEqualityComparer<IEnumerable<T>> {
+            private readonly Func<IEnumerable<T>, IEnumerable<T>, bool> _cmp;
+
+            public StrictEnumerableComparerOf() {
+                this._cmp = Enumerable.SequenceEqual;
+            }
+
+            public StrictEnumerableComparerOf(Func<IEnumerable<T>, IEnumerable<T>, bool> cmp) {
+                this._cmp = cmp;
+            }
+
             public bool Equals(IEnumerable<T> x, IEnumerable<T> y) {
-                return Enumerable.SequenceEqual(x, y);// EnumerableExtensions.EqualsByElements(x, y);
+                return this._cmp(x, y);// Enumerable.SequenceEqual(x, y);
             }
 
             public int GetHashCode(IEnumerable<T> collection) {
@@ -80,19 +90,46 @@ namespace Jail.Common {
             }
         }
 
-        private class MultisetEnumerableComparerOf<T> : IEqualityComparer<IEnumerable<T>> {
+        internal class MultisetEnumerableComparerOf<T> : IEqualityComparer<IEnumerable<T>> {
+            private readonly Func<IEnumerable<T>, IEnumerable<T>, bool> _cmp;
+
+            public MultisetEnumerableComparerOf() {
+                this._cmp = EnumerableExtensions.EqualsAsMultisetUsingEquals;
+            }
+
+            public MultisetEnumerableComparerOf(Func<IEnumerable<T>, IEnumerable<T>, bool> cmp) {
+                this._cmp = cmp;
+            }
+
             public bool Equals(IEnumerable<T> x, IEnumerable<T> y) {
                 if ((object)x == null && (object)y == null)
                     return true;
                 if ((object)x == null || (object)y == null)
                     return false;
-                return EnumerableExtensions.EqualsAsMultiset(x, y);
+                return this._cmp(x, y);
             }
 
             public int GetHashCode(IEnumerable<T> collection) {
                 if (collection == null)
                     return 0;
-                return collection.Count();
+                Dictionary<T, int> subHashs = new Dictionary<T, int>();
+                var nullHash = 0;
+                foreach (var element in collection) {
+                    if (element == null) {
+                        nullHash += 1;
+                        continue;
+                    }
+                    if (!subHashs.ContainsKey(element))
+                        subHashs[element] = 0;
+                    subHashs[element] += 1;
+                }
+                return subHashs
+                    .OrderBy(pair => pair.Key)
+                    .Select(pair => pair.Value)
+                    .Aggregate(
+                        nullHash, 
+                        (accumulated, next) => accumulated ^ next
+                    );
             }
         }
     }

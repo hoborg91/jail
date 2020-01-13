@@ -185,6 +185,17 @@ namespace Jail.Common {
             return true;
         }
 
+        internal static bool EqualsAsMultisetUsingEquals<T>(
+            this IEnumerable<T> collection1, 
+            IEnumerable<T> collection2
+        ) {
+            return EqualsAsMultiset(
+                collection1, 
+                collection2, 
+                (a, b) => object.Equals(a, b)
+            );
+        }
+
         /// <summary>
         /// Concatenates the given collection of strings with the
         /// given separator.
