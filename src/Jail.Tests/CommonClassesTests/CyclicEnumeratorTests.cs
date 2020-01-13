@@ -8,7 +8,7 @@ namespace Jail.Tests.CommonClassesTests {
     [TestFixture]
     public class CyclicEnumeratorTests {
         [Test]
-        public void Test_CtorThrowsOnNullArgument() {
+        public void CtorThrowsOnNullArgument() {
             // Arrange, Act, Assert
             Assert.Throws<ArgumentNullException>(() => {
                 new CyclicEnumerator<int>(null);
@@ -16,7 +16,7 @@ namespace Jail.Tests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_EmptyCycle() {
+        public void EmptyCycle() {
             // Arrange
             var cycle = new CyclicEnumerator<int>(new int[0]);
             var getIntoForeach = false;
@@ -34,7 +34,7 @@ namespace Jail.Tests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_CollectionAndInfinteLoop() {
+        public void CollectionAndInfinteLoop() {
             // Arrange
             var count = 6;
             var range = Enumerable.Range(0, count).ToArray();
@@ -55,6 +55,74 @@ namespace Jail.Tests.CommonClassesTests {
             Assert.IsTrue(infiniteLoopDetected);
             Assert.AreEqual(count, fromCycle.Count);
             CollectionAssert.AreEquivalent(range, fromCycle);
+        }
+
+        [Test]
+        public void Reset() {
+            // Arrange
+            var arr = new[] { 0, 1, 2, };
+            var cycle = new CyclicEnumerator<int>(arr);
+
+            // Act
+            cycle.MoveNext();
+            var result1 = cycle.Current;
+            cycle.Reset();
+            cycle.MoveNext();
+            var result2 = cycle.Current;
+            foreach (var i in Enumerable.Range(0, 10))
+                cycle.MoveNext();
+            cycle.Reset();
+            cycle.MoveNext();
+            var result3 = cycle.Current;
+
+            // Assert
+            Assert.AreEqual(arr[0], result1);
+            Assert.AreEqual(arr[0], result2);
+            Assert.AreEqual(arr[0], result3);
+        }
+
+        [Test]
+        public void Dispose_Current() {
+            // Arrange
+            var cycle = this._prepareDispose();
+
+            // Act, Assert
+            Assert.Throws<ObjectDisposedException>(() => {
+                var t = cycle.Current;
+            });
+        }
+
+        [Test]
+        public void Dispose_MoveNext() {
+            // Arrange
+            var cycle = this._prepareDispose();
+
+            // Act, Assert
+            Assert.Throws<ObjectDisposedException>(() => cycle.MoveNext());
+        }
+
+        [Test]
+        public void Dispose_Reset() {
+            // Arrange
+            var cycle = this._prepareDispose();
+
+            // Act, Assert
+            Assert.Throws<ObjectDisposedException>(() => cycle.Reset());
+        }
+
+        private CyclicEnumerator<int> _prepareDispose() {
+            // Arrange
+            var arr = new[] { 0, };
+            var cycle = new CyclicEnumerator<int>(arr);
+
+            // Act
+            cycle.Dispose();
+            cycle.Dispose();
+
+            // Assert
+            Assert.NotNull(cycle);
+
+            return cycle;
         }
     }
 }

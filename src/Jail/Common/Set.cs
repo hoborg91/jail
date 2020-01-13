@@ -48,18 +48,22 @@ namespace Jail.Common {
     /// <summary>A proxy of <see cref="HashSet{T}"/> which 
     /// implements the <see cref="IReadOnlySet{T}"/> interface.</summary>
     public sealed class Set<T> : IReadOnlySet<T>, ISet<T> {
-        private readonly HashSet<T> _set;
+        private readonly ISet<T> _set;
 
         /// <inheritdoc cref="ICollection{T}.Count" />
         public int Count => this._set.Count;
 
         /// <inheritdoc cref="ICollection{T}.IsReadOnly" />
-        public bool IsReadOnly => ((ISet<T>)_set).IsReadOnly;
+        public bool IsReadOnly => _set.IsReadOnly;
 
         /// <summary>A proxy of <see cref="HashSet{T}"/> which 
         /// implements the <see cref="IReadOnlySet{T}"/> interface.</summary>
         public Set() {
             this._set = new HashSet<T>();
+        }
+
+        internal Set(ISet<T> set) {
+            this._set = set;
         }
 
         /// <summary>A proxy of <see cref="HashSet{T}"/> which 

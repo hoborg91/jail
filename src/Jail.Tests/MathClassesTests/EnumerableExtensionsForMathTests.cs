@@ -37,11 +37,13 @@ namespace Jail.Tests.MathClassesTests {
             var input = new float[] { -1000.001f, -1000, -1.1f, -1, -0.001f, 0, 0.001f, 1, 1.1f, 1000, 1000.001f, };
 
             // Act
-            var kahanSum = EnumerableExtensionsForMath.NeumaierSum(input);
+            var neumaierSum = EnumerableExtensionsForMath.NeumaierSum(input);
+            var neumaierSum_Enumerable = EnumerableExtensionsForMath.NeumaierSum((IEnumerable<float>)input);
 
             // Assert
             var sum = input.Sum();
-            Assert.AreEqual(sum, kahanSum);
+            Assert.AreEqual(sum, neumaierSum);
+            Assert.AreEqual(sum, neumaierSum_Enumerable);
         }
 
         [Test]
@@ -50,11 +52,13 @@ namespace Jail.Tests.MathClassesTests {
             var input = new double[] { -1000.001, -1000, -1.1, -1, -0.001, 0, 0.001, 1, 1.1, 1000, 1000.001, };
 
             // Act
-            var kahanSum = EnumerableExtensionsForMath.NeumaierSum(input);
+            var neumaierSum = EnumerableExtensionsForMath.NeumaierSum(input);
+            var neumaierSum_Enumerable = EnumerableExtensionsForMath.NeumaierSum((IEnumerable<double>)input);
 
             // Assert
             var sum = input.Sum();
-            Assert.AreEqual(sum, kahanSum);
+            Assert.AreEqual(sum, neumaierSum);
+            Assert.AreEqual(sum, neumaierSum_Enumerable);
         }
 
         [Test]
@@ -63,11 +67,13 @@ namespace Jail.Tests.MathClassesTests {
             var input = new decimal[] { -1000.001m, -1000, -1.1m, -1, -0.001m, 0, 0.001m, 1, 1.1m, 1000, 1000.001m, };
 
             // Act
-            var kahanSum = EnumerableExtensionsForMath.NeumaierSum(input);
+            var neumaierSum = EnumerableExtensionsForMath.NeumaierSum(input);
+            var neumaierSum_Enumerable = EnumerableExtensionsForMath.NeumaierSum((IEnumerable<decimal>)input);
 
             // Assert
             var sum = input.Sum();
-            Assert.AreEqual(sum, kahanSum);
+            Assert.AreEqual(sum, neumaierSum);
+            Assert.AreEqual(sum, neumaierSum_Enumerable);
         }
     }
 }

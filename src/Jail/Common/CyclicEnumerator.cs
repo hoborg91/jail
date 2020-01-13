@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Jail.Common {
     internal sealed class CyclicEnumerator<T> : IEnumerator<T> {
-        public T Current => this._idx < 0
+        public T Current => this._checkNotDisposed() && this._idx < 0
             ? throw new InvalidOperationException()
             : this._list[this._idx];
 
@@ -30,7 +30,7 @@ namespace Jail.Common {
             lock (this._chest) {
                 if (this._isDisposed)
                     return;
-                this._isDisposed = false;
+                this._isDisposed = true;
             }
         }
 
@@ -51,9 +51,10 @@ namespace Jail.Common {
             }
         }
 
-        private void _checkNotDisposed() {
+        private bool _checkNotDisposed() {
             if (this._isDisposed)
                 throw new ObjectDisposedException(nameof(CyclicEnumerator<T>));
+            return true;
         }
 
         #region Override object
