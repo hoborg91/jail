@@ -128,17 +128,13 @@ namespace Jail.HelpersForTests {
         public void TestForNullArgumentsCheck(
             Func<Type, object[]> instancesFactory,
             Func<ParameterInfo, object> parametersFactory,
-            Func<ITypeArgumentContextForType[], IReadOnlyCollection<Type[]>> typeTypeArgumentsFactory,
-            Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> methodTypeArgumentsFactory
+            Func<ITypeArgumentContextForType[], IReadOnlyCollection<Type[]>> typeTypeArgumentsFactory = null,
+            Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> methodTypeArgumentsFactory = null
         ) {
             if (instancesFactory == null)
                 throw new ArgumentNullException(nameof(instancesFactory));
             if (parametersFactory == null)
                 throw new ArgumentNullException(nameof(parametersFactory));
-            if (typeTypeArgumentsFactory == null)
-                throw new ArgumentNullException(nameof(typeTypeArgumentsFactory));
-            if (methodTypeArgumentsFactory == null)
-                throw new ArgumentNullException(nameof(methodTypeArgumentsFactory));
             
             var fails = new HashSet<MissingExceptionException>();
             var types = this._typesFinder.GetAllTypes()
@@ -169,14 +165,12 @@ namespace Jail.HelpersForTests {
         public void TestForNullArgumentsCheck<T>(
             T instance,
             Func<ParameterInfo, object> parametersFactory,
-            Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> methodTypeArgumentsFactory
+            Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> methodTypeArgumentsFactory = null
         ) {
             if (instance == null)
                 throw new ArgumentNullException(nameof(instance));
             if (parametersFactory == null)
                 throw new ArgumentNullException(nameof(parametersFactory));
-            if (methodTypeArgumentsFactory == null)
-                throw new ArgumentNullException(nameof(methodTypeArgumentsFactory));
 
             var type = typeof(T);
             if (type.IsGenericTypeDefinition)
@@ -201,8 +195,8 @@ namespace Jail.HelpersForTests {
             string typeName,
             object instance,
             Func<ParameterInfo, object> parametersFactory,
-            Func<ITypeArgumentContextForType[], IReadOnlyCollection<Type[]>> typeTypeArgumentsFactory,
-            Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> methodTypeArgumentsFactory
+            Func<ITypeArgumentContextForType[], IReadOnlyCollection<Type[]>> typeTypeArgumentsFactory = null,
+            Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> methodTypeArgumentsFactory = null
         ) {
             if (typeName == null)
                 throw new ArgumentNullException(nameof(typeName));
@@ -212,10 +206,6 @@ namespace Jail.HelpersForTests {
                 throw new ArgumentNullException(nameof(instance));
             if (parametersFactory == null)
                 throw new ArgumentNullException(nameof(parametersFactory));
-            if (typeTypeArgumentsFactory == null)
-                throw new ArgumentNullException(nameof(typeTypeArgumentsFactory));
-            if (methodTypeArgumentsFactory == null)
-                throw new ArgumentNullException(nameof(methodTypeArgumentsFactory));
             
             var type = this._typesFinder.FindType(typeName);
             foreach (var t in this._makeTypes(type, typeTypeArgumentsFactory)) {
@@ -239,8 +229,8 @@ namespace Jail.HelpersForTests {
             string typeNamespace,
             object instance,
             Func<ParameterInfo, object> parametersFactory,
-            Func<ITypeArgumentContextForType[], IReadOnlyCollection<Type[]>> typeTypeArgumentsFactory,
-            Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> methodTypeArgumentsFactory
+            Func<ITypeArgumentContextForType[], IReadOnlyCollection<Type[]>> typeTypeArgumentsFactory = null,
+            Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> methodTypeArgumentsFactory = null
         ) {
             if (typeName == null)
                 throw new ArgumentNullException(nameof(typeName));
@@ -254,10 +244,6 @@ namespace Jail.HelpersForTests {
                 throw new ArgumentNullException(nameof(instance));
             if (parametersFactory == null)
                 throw new ArgumentNullException(nameof(parametersFactory));
-            if (typeTypeArgumentsFactory == null)
-                throw new ArgumentNullException(nameof(typeTypeArgumentsFactory));
-            if (methodTypeArgumentsFactory == null)
-                throw new ArgumentNullException(nameof(methodTypeArgumentsFactory));
 
             var type = this._typesFinder.FindType(typeName, typeNamespace);
             foreach (var t in this._makeTypes(type, typeTypeArgumentsFactory)) {
@@ -448,6 +434,7 @@ namespace Jail.HelpersForTests {
                 var parameterToTest = methodToTestParameters[i];
                 if (false
                     || parameterToTest.ParameterType.IsValueType
+                    || parameterToTest.RawDefaultValue == null
                     || parameterToTest.CustomAttributes.Any(a => a.AttributeType.Name == "CanBeNullAttribute")
                 ) {
                     continue;
@@ -475,9 +462,6 @@ namespace Jail.HelpersForTests {
                 methodToTest.Invoke(instance, arguments);
             } catch(TargetInvocationException tie) {
                 registeredException = tie.InnerException;
-            } catch(InvalidOperationException) {
-                var debug = 0;
-                throw;
             }
             var ane = registeredException as ArgumentNullException;
             if (ane == null) {

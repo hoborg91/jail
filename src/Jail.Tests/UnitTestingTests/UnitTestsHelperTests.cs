@@ -198,8 +198,7 @@ namespace Jail.Tests.UnitTestingTests {
             try {
                 sut.TestForNullArgumentsCheck(
                     new ClassToTest(), 
-                    ctx => new object(),
-                    c => null
+                    ctx => new object()
                 );
             } catch(AggregateException aggregate) {
                 catched = aggregate.InnerExceptions;
