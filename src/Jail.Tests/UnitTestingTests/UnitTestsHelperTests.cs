@@ -5,6 +5,9 @@ using NUnit.Framework;
 using Moq;
 using Jail.HelpersForTests;
 using Jail.Design.Annotations;
+using AutoFixture;
+using AutoFixture.Kernel;
+using AutoFixture.AutoMoq;
 
 namespace Jail.Tests.UnitTestingTests {
     [TestFixture]
@@ -31,6 +34,8 @@ namespace Jail.Tests.UnitTestingTests {
             this._reflectionHelperMock = new Mock<IReflectionHelper>();
         }
 
+        #region New
+
         [Test]
         public void New() {
             // Arrange
@@ -46,6 +51,44 @@ namespace Jail.Tests.UnitTestingTests {
                 It.IsAny<Type>(),
                 constructorArguments), Times.Once);
         }
+
+        [Test]
+        public void New_ThrowsOnNullArg_0() {
+            // Arrange
+            var (sut, typeName, constructorArguments) =
+                this._prepareCommonTestCase();
+
+            // Act, Assert
+            Assert.Throws<ArgumentNullException>(() => 
+                sut.New<IStub>(null, "ns", constructorArguments)
+            );
+        }
+
+        [Test]
+        public void New_ThrowsOnNullArg_1() {
+            // Arrange
+            var (sut, typeName, constructorArguments) =
+                this._prepareCommonTestCase();
+
+            // Act, Assert
+            Assert.Throws<ArgumentNullException>(() => 
+                sut.New<IStub>(typeName, null, constructorArguments)
+            );
+        }
+
+        [Test]
+        public void New_ThrowsOnNullArg_2() {
+            // Arrange
+            var (sut, typeName, constructorArguments) =
+                this._prepareCommonTestCase();
+
+            // Act, Assert
+            Assert.Throws<ArgumentNullException>(() => 
+                sut.New<IStub>(typeName, "ns", null)
+            );
+        }
+
+        #endregion New
 
         #region TestForNullArgumentsCheck
 
@@ -155,7 +198,8 @@ namespace Jail.Tests.UnitTestingTests {
             try {
                 sut.TestForNullArgumentsCheck(
                     new ClassToTest(), 
-                    ctx => new object()
+                    ctx => new object(),
+                    c => null
                 );
             } catch(AggregateException aggregate) {
                 catched = aggregate.InnerExceptions;
@@ -191,6 +235,24 @@ namespace Jail.Tests.UnitTestingTests {
         }
 
         #endregion TestForNullArgumentsCheck
+
+        #region
+
+        [Test]
+        public void T() {
+            var helper = new UnitTestsHelper<UnitTestsHelper>();
+            var f = new Fixture();
+            f.Customize(new AutoMoqCustomization());
+            var fCtx = new SpecimenContext(f);
+            helper.TestForNullArgumentsCheck(
+                t => new[] { f.Create(t, fCtx), },
+                p => f.Create(p.ParameterType, fCtx),
+                cs => new[] { cs.Select(c => typeof(UnitTestsHelper)).ToArray() },
+                cs => new[] { cs.Select(c => typeof(int)).ToArray() }
+            );
+        }
+
+        #endregion
 
         private void _verifyTypesFinder(string typeName) {
             this._typesFinderMock.Verify(
@@ -281,7 +343,7 @@ namespace Jail.Tests.UnitTestingTests {
             }
 
             public void MethodWithNoCheckButCanBeNull(
-                [CanBeNull]object alpha
+                [Design.Annotations.CanBeNull]object alpha
             ) {
 
             }

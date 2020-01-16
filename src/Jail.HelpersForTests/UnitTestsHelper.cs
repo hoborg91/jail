@@ -57,6 +57,11 @@ namespace Jail.HelpersForTests {
             string typeName,
             params object[] constructorArguments
         ) {
+            if (typeName == null)
+                throw new ArgumentNullException(nameof(typeName));
+            if (constructorArguments == null)
+                throw new ArgumentNullException(nameof(constructorArguments));
+
             return this._new<TAbstraction>(
                 typeName, 
                 null, 
@@ -121,19 +126,36 @@ namespace Jail.HelpersForTests {
         /// the throw of the exception.
         /// </summary>
         public void TestForNullArgumentsCheck(
-            Func<Type, object> instancesFactory,
-            Func<ParameterInfo, object> parametersFactory
+            Func<Type, object[]> instancesFactory,
+            Func<ParameterInfo, object> parametersFactory,
+            Func<ITypeArgumentContextForType[], IReadOnlyCollection<Type[]>> typeTypeArgumentsFactory,
+            Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> methodTypeArgumentsFactory
         ) {
             if (instancesFactory == null)
                 throw new ArgumentNullException(nameof(instancesFactory));
             if (parametersFactory == null)
                 throw new ArgumentNullException(nameof(parametersFactory));
+            if (typeTypeArgumentsFactory == null)
+                throw new ArgumentNullException(nameof(typeTypeArgumentsFactory));
+            if (methodTypeArgumentsFactory == null)
+                throw new ArgumentNullException(nameof(methodTypeArgumentsFactory));
+            
             var fails = new HashSet<MissingExceptionException>();
-            var types = this._typesFinder.GetAllTypes().Where(t => t.IsPublic);
+            var types = this._typesFinder.GetAllTypes()
+                .Where(t => t.IsPublic)
+                .SelectMany(t => this._makeTypes(t, typeTypeArgumentsFactory))
+                .ToList();
             foreach (var type in types) {
-                var instance = instancesFactory(type);
-                foreach (var fail in this._testForNullArgumentsCheck(type, instance, parametersFactory))
-                    fails.Add(fail);
+                var instances = instancesFactory(type);
+                foreach (var instance in instances) {
+                    foreach (var fail in this._testForNullArgumentsCheck(
+                        type, 
+                        instance, 
+                        parametersFactory,
+                        methodTypeArgumentsFactory
+                    ))
+                        fails.Add(fail);
+                }
             }
             this._throwIfFail(fails);
         }
@@ -146,14 +168,27 @@ namespace Jail.HelpersForTests {
         /// </summary>
         public void TestForNullArgumentsCheck<T>(
             T instance,
-            Func<ParameterInfo, object> parametersFactory
+            Func<ParameterInfo, object> parametersFactory,
+            Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> methodTypeArgumentsFactory
         ) {
             if (instance == null)
                 throw new ArgumentNullException(nameof(instance));
             if (parametersFactory == null)
                 throw new ArgumentNullException(nameof(parametersFactory));
+            if (methodTypeArgumentsFactory == null)
+                throw new ArgumentNullException(nameof(methodTypeArgumentsFactory));
+
             var type = typeof(T);
-            this._throwIfFail(this._testForNullArgumentsCheck(typeof(T), instance, parametersFactory));
+            if (type.IsGenericTypeDefinition)
+                throw new Exception("Specify completely defined type, not " + 
+                    $"generic type definition, when use {nameof(TestForNullArgumentsCheck)} " +
+                    "with type argument.");
+            this._throwIfFail(this._testForNullArgumentsCheck(
+                typeof(T), 
+                instance, 
+                parametersFactory,
+                methodTypeArgumentsFactory
+            ));
         }
 
         /// <summary>
@@ -165,16 +200,32 @@ namespace Jail.HelpersForTests {
         public void TestForNullArgumentsCheck(
             string typeName,
             object instance,
-            Func<ParameterInfo, object> parametersFactory
+            Func<ParameterInfo, object> parametersFactory,
+            Func<ITypeArgumentContextForType[], IReadOnlyCollection<Type[]>> typeTypeArgumentsFactory,
+            Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> methodTypeArgumentsFactory
         ) {
+            if (typeName == null)
+                throw new ArgumentNullException(nameof(typeName));
             if (string.IsNullOrWhiteSpace(typeName))
                 throw new ArgumentException($"Argument {nameof(typeName)} must not be empty.");
             if (instance == null)
                 throw new ArgumentNullException(nameof(instance));
             if (parametersFactory == null)
                 throw new ArgumentNullException(nameof(parametersFactory));
+            if (typeTypeArgumentsFactory == null)
+                throw new ArgumentNullException(nameof(typeTypeArgumentsFactory));
+            if (methodTypeArgumentsFactory == null)
+                throw new ArgumentNullException(nameof(methodTypeArgumentsFactory));
+            
             var type = this._typesFinder.FindType(typeName);
-            this._throwIfFail(this._testForNullArgumentsCheck(type, instance, parametersFactory));
+            foreach (var t in this._makeTypes(type, typeTypeArgumentsFactory)) {
+                this._throwIfFail(this._testForNullArgumentsCheck(
+                    type, 
+                    instance, 
+                    parametersFactory,
+                    methodTypeArgumentsFactory
+                ));
+            }
         }
 
         /// <summary>
@@ -187,24 +238,43 @@ namespace Jail.HelpersForTests {
             string typeName,
             string typeNamespace,
             object instance,
-            Func<ParameterInfo, object> parametersFactory
+            Func<ParameterInfo, object> parametersFactory,
+            Func<ITypeArgumentContextForType[], IReadOnlyCollection<Type[]>> typeTypeArgumentsFactory,
+            Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> methodTypeArgumentsFactory
         ) {
+            if (typeName == null)
+                throw new ArgumentNullException(nameof(typeName));
             if (string.IsNullOrWhiteSpace(typeName))
                 throw new ArgumentException($"Argument {nameof(typeName)} must not be empty.");
+            if (typeNamespace == null)
+                throw new ArgumentNullException(nameof(typeNamespace));
             if (string.IsNullOrWhiteSpace(typeNamespace))
                 throw new ArgumentException($"Argument {nameof(typeNamespace)} must not be empty.");
             if (instance == null)
                 throw new ArgumentNullException(nameof(instance));
             if (parametersFactory == null)
                 throw new ArgumentNullException(nameof(parametersFactory));
+            if (typeTypeArgumentsFactory == null)
+                throw new ArgumentNullException(nameof(typeTypeArgumentsFactory));
+            if (methodTypeArgumentsFactory == null)
+                throw new ArgumentNullException(nameof(methodTypeArgumentsFactory));
+
             var type = this._typesFinder.FindType(typeName, typeNamespace);
-            this._throwIfFail(this._testForNullArgumentsCheck(type, instance, parametersFactory));
+            foreach (var t in this._makeTypes(type, typeTypeArgumentsFactory)) {
+                this._throwIfFail(this._testForNullArgumentsCheck(
+                    type, 
+                    instance, 
+                    parametersFactory,
+                    methodTypeArgumentsFactory
+                ));
+            }
         }
 
         private ISet<MissingExceptionException> _testForNullArgumentsCheck(
             Type type,
             object instance,
-            Func<ParameterInfo, object> parametersFactory
+            Func<ParameterInfo, object> parametersFactory,
+            Func<TypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> methodTypeArgumentsFactory
         ) {
             var typeName = type.Name;
             var instanceType = instance.GetType();
@@ -215,10 +285,10 @@ namespace Jail.HelpersForTests {
             var publicInstanceMethods = type.GetMethods(BindingFlags.Public 
                                                       | BindingFlags.Instance 
                                                       | BindingFlags.DeclaredOnly
-            );
+            ).SelectMany(m => this._makeMethod(m, methodTypeArgumentsFactory));
             var publicStaticMethods = type.GetMethods(BindingFlags.Public
                                                     | BindingFlags.Static
-            );
+            ).SelectMany(m => this._makeMethod(m, methodTypeArgumentsFactory));
             var publicConstructors = type.GetConstructors();
 
             ISet<MissingExceptionException> fails = new HashSet<MissingExceptionException>();
@@ -235,6 +305,128 @@ namespace Jail.HelpersForTests {
                     fails.Add(e);
             }
             return fails;
+        }
+
+        private IEnumerable<Type> _makeTypes(
+            Type type,
+            Func<TypeArgumentContextForType[], IReadOnlyCollection<Type[]>> typeTypeArgumentsFactory
+        ) {
+            if (!type.IsGenericTypeDefinition) {
+                yield return type;
+                yield break;
+            }
+
+            var typeArgumentsSignature = type.GetGenericArguments()
+                .Select(a => new TypeArgumentContextForType(
+                    type,
+                    a,
+                    a.GetGenericParameterConstraints(),
+                    a.GenericParameterAttributes
+                ))
+                .ToArray();
+            
+            var typeArgumentsSets = typeTypeArgumentsFactory(typeArgumentsSignature);
+
+            if (!typeArgumentsSets.Any())
+                throw new Exception("No type arguments have been manufactured.");
+
+            foreach (var typeArguments in typeArgumentsSets) {
+                if (typeArguments.Length != typeArgumentsSignature.Length) {
+                    throw new Exception("Wrong number of type arguments have been provided.");
+                }
+                var definedType = type.MakeGenericType(typeArguments);
+                yield return definedType;
+            }
+        }
+
+        private IEnumerable<MethodBase> _makeMethod(
+            MethodInfo methodInfo,
+            Func<TypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> methodTypeArgumentsFactory
+        ) {
+            if (!methodInfo.IsGenericMethodDefinition) {
+                yield return methodInfo;
+                yield break;
+            }
+
+            var typeArgumentsSignature = methodInfo.GetGenericArguments()
+                .Select(a => new TypeArgumentContextForMethod(
+                    methodInfo,
+                    a,
+                    a.GetGenericParameterConstraints(),
+                    a.GenericParameterAttributes
+                ))
+                .ToArray();
+            
+            var typeArgumentsSets = methodTypeArgumentsFactory(typeArgumentsSignature);
+
+            if (!typeArgumentsSets.Any())
+                throw new Exception("No type arguments have been manufactured.");
+
+            foreach (var typeArguments in typeArgumentsSets) {
+                if (typeArguments.Length != typeArgumentsSignature.Length) {
+                    throw new Exception("Wrong number of type arguments have been provided.");
+                }
+                var definedMethod = methodInfo.MakeGenericMethod(typeArguments);
+                yield return definedMethod;
+            }
+        }
+
+        private class TypeArgumentContext : ITypeArgumentContext {
+            public Type TypeArgument { get; }
+            
+            public Type[] TypeConstraints { get; } 
+            
+            public GenericParameterAttributes GenericParameterAttributes { get; }
+
+            public TypeArgumentContext(
+                Type typeArgument, 
+                Type[] typeConstraints, 
+                GenericParameterAttributes genericParameterAttributes
+            ) {
+                this.TypeArgument = typeArgument;
+                this.TypeConstraints = typeConstraints;
+                this.GenericParameterAttributes = genericParameterAttributes;
+            }
+        }
+
+        private sealed class TypeArgumentContextForType 
+            : TypeArgumentContext
+            , ITypeArgumentContextForType
+        {
+            public Type GenericTypeDefinition { get; }
+
+            public TypeArgumentContextForType(
+                Type genericTypeDefinition,
+                Type typeArgument, 
+                Type[] typeConstraints, 
+                GenericParameterAttributes genericParameterAttributes
+            ) : base(
+                typeArgument, 
+                typeConstraints, 
+                genericParameterAttributes
+            ) {
+                this.GenericTypeDefinition = genericTypeDefinition;
+            }
+        }
+
+        private sealed class TypeArgumentContextForMethod 
+            : TypeArgumentContext
+            , ITypeArgumentContextForMethod
+        {
+            public MethodInfo GenericMethodDefinition { get; }
+
+            public TypeArgumentContextForMethod(
+                MethodInfo genericMethodDefinition,
+                Type typeArgument, 
+                Type[] typeConstraints, 
+                GenericParameterAttributes genericParameterAttributes
+            ) : base(
+                typeArgument, 
+                typeConstraints, 
+                genericParameterAttributes
+            ) {
+                this.GenericMethodDefinition = genericMethodDefinition;
+            }
         }
 
         private void _throwIfFail(ISet<MissingExceptionException> fails) {
@@ -254,7 +446,10 @@ namespace Jail.HelpersForTests {
             var methodToTestParameters = methodToTest.GetParameters();
             for (var i = 0; i < validArguments.Length; i++) {
                 var parameterToTest = methodToTestParameters[i];
-                if (parameterToTest.CustomAttributes.Any(a => a.AttributeType.Name == "CanBeNullAttribute")) {
+                if (false
+                    || parameterToTest.ParameterType.IsValueType
+                    || parameterToTest.CustomAttributes.Any(a => a.AttributeType.Name == "CanBeNullAttribute")
+                ) {
                     continue;
                 }
                 var arguments = validArguments
@@ -280,6 +475,9 @@ namespace Jail.HelpersForTests {
                 methodToTest.Invoke(instance, arguments);
             } catch(TargetInvocationException tie) {
                 registeredException = tie.InnerException;
+            } catch(InvalidOperationException) {
+                var debug = 0;
+                throw;
             }
             var ane = registeredException as ArgumentNullException;
             if (ane == null) {
@@ -329,5 +527,21 @@ namespace Jail.HelpersForTests {
         /// </remarks>
         public UnitTestsHelper() : base(typeof(T).Assembly) {
         }
+    }
+
+    public interface ITypeArgumentContext {
+        Type TypeArgument { get; }
+        
+        Type[] TypeConstraints { get; } 
+        
+        GenericParameterAttributes GenericParameterAttributes { get; }
+    }
+
+    public interface ITypeArgumentContextForType : ITypeArgumentContext {
+        Type GenericTypeDefinition { get; }
+    }
+
+    public interface ITypeArgumentContextForMethod : ITypeArgumentContext {
+        MethodInfo GenericMethodDefinition { get; }
     }
 }
