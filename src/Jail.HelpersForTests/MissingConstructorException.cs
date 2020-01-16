@@ -14,15 +14,15 @@ namespace Jail.HelpersForTests {
         /// <summary>
         /// The exception indicating that the searched constructor is absent.
         /// </summary>
-        public MissingConstructorException(string message) : base(message) {
+        public MissingConstructorException([CanBeNull]string message) : base(message) {
         }
 
         /// <summary>
         /// The exception indicating that the searched constructor is absent.
         /// </summary>
         public MissingConstructorException(
-            string message, 
-            Exception innerException
+            [CanBeNull]string message, 
+            [CanBeNull]Exception innerException
         ) : base(
             message, 
             innerException

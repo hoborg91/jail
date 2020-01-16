@@ -11,8 +11,8 @@ namespace Jail.HelpersForTests {
         /// the expected exception.
         /// </summary>
         public MissingExceptionException(
-            string message, 
-            Exception innerException
+            [CanBeNull]string message, 
+            [CanBeNull]Exception innerException
         ) : base(
             message, 
             innerException
