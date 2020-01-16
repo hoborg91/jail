@@ -128,7 +128,7 @@ namespace Jail.Design.FileSystem {
             public void Dispose() {
                 lock (this._chest) {
                     // Optimistic suggestion: the method is called
-                    // reare (only once), thus performance benefit
+                    // rarely (only once), thus performance benefit
                     // of double check is little. If this suggestion
                     // is considered to be wrong, then make a copy
                     // of the following check before the lock.
@@ -191,7 +191,7 @@ namespace Jail.Design.FileSystem {
             public void Dispose() {
                 lock (this._chest) {
                     // Optimistic suggestion: the method is called
-                    // reare (only once), thus performance benefit
+                    // rarely (only once), thus performance benefit
                     // of double check is little. If this suggestion
                     // is considered to be wrong, then make a copy
                     // of the following check before the lock.
