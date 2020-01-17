@@ -35,5 +35,12 @@ namespace Jail.Common {
                 throw new ArgumentNullException();
             throw new ArgumentNullException(paramName);
         }
+
+        /// <summary>
+        /// Returns an array containing single given item.
+        /// </summary>
+        public static T[] AsArray<T>([CanBeNull]this T item) {
+            return new[] { item, };
+        }
     }
 }

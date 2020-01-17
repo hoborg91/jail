@@ -6,7 +6,7 @@ namespace Jail.Tests.CommonClassesTests {
     [TestFixture]
     public class ObjectExtensionsTesets {
         [Test]
-        public void Test_IsNull() {
+        public void IsNull() {
             // Arrange
             object 
                 nullObject = null, 
@@ -22,7 +22,7 @@ namespace Jail.Tests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_IsNotNull() {
+        public void IsNotNull() {
             // Arrange
             object
                 nullObject = null,
@@ -38,7 +38,7 @@ namespace Jail.Tests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_CheckArgumentNotNull_DoesNotThrow() {
+        public void CheckArgumentNotNull_DoesNotThrow() {
             // Arrange, Act
             var obj = new object();
 
@@ -50,7 +50,7 @@ namespace Jail.Tests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_CheckArgumentNotNull() {
+        public void CheckArgumentNotNull() {
             // Arrange, Act, Assert
             Assert.Throws<ArgumentNullException>(() => {
                 ObjectExtensions.CheckArgumentNotNull((object)null);
@@ -58,7 +58,7 @@ namespace Jail.Tests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_CheckArgumentNotNull_WithParamName() {
+        public void CheckArgumentNotNull_WithParamName() {
             // Arrange, Act, Assert
             string paramName = "test";
             try {
@@ -71,6 +71,20 @@ namespace Jail.Tests.CommonClassesTests {
             catch(ArgumentNullException ex) {
                 Assert.AreEqual(paramName, ex.ParamName);
             }
+        }
+
+        [Test]
+        public void AsArray() {
+            // Arrange
+            var item = 1;
+            var expected = new[] { 1, };
+
+            // Act
+            var result = ObjectExtensions.AsArray(item);
+
+            // Assert
+            Assert.NotNull(result);
+            CollectionAssert.AreEqual(expected, result);
         }
     }
 }
