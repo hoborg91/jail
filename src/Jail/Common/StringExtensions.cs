@@ -9,14 +9,14 @@ namespace Jail.Common {
         /// Indicates whether a specified string is null, empty, 
         /// or consists only of white-space characters.
         /// </summary>
-        public static bool IsNullOrWhiteSpace(this string s) {
+        public static bool IsNullOrWhiteSpace([CanBeNull]this string s) {
             return string.IsNullOrWhiteSpace(s);
         }
 
         /// <summary>
         /// Indicates whether a specified string is null or empty.
         /// </summary>
-        public static bool IsNullOrEmpty(this string s) {
+        public static bool IsNullOrEmpty([CanBeNull]this string s) {
             return string.IsNullOrEmpty(s);
         }
 

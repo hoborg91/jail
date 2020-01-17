@@ -74,13 +74,13 @@ namespace Jail.Common {
 
         /// <summary>A proxy of <see cref="HashSet{T}"/> which 
         /// implements the <see cref="IReadOnlySet{T}"/> interface.</summary>
-        public Set(IEqualityComparer<T> equalityComparer) {
+        public Set([CanBeNull]IEqualityComparer<T> equalityComparer) {
             this._set = new HashSet<T>(equalityComparer);
         }
 
         /// <summary>A proxy of <see cref="HashSet{T}"/> which 
         /// implements the <see cref="IReadOnlySet{T}"/> interface.</summary>
-        public Set(IEnumerable<T> collection, IEqualityComparer<T> equalityComparer) {
+        public Set(IEnumerable<T> collection, [CanBeNull]IEqualityComparer<T> equalityComparer) {
             this._set = new HashSet<T>(collection, equalityComparer);
         }
 
@@ -95,7 +95,7 @@ namespace Jail.Common {
         }
 
         /// <inheritdoc cref="ICollection{T}.Add(T)" />
-        public bool Add(T item) {
+        public bool Add([CanBeNull]T item) {
             return _set.Add(item);
         }
 
@@ -150,7 +150,7 @@ namespace Jail.Common {
         }
 
         /// <inheritdoc cref="ICollection{T}.Add(T)" />
-        void ICollection<T>.Add(T item) {
+        void ICollection<T>.Add([CanBeNull]T item) {
             _set.Add(item);
         }
 
@@ -160,7 +160,7 @@ namespace Jail.Common {
         }
 
         /// <inheritdoc cref="ICollection{T}.Contains(T)" />
-        public bool Contains(T item) {
+        public bool Contains([CanBeNull]T item) {
             return _set.Contains(item);
         }
 
@@ -170,7 +170,7 @@ namespace Jail.Common {
         }
 
         /// <inheritdoc cref="ICollection{T}.Remove(T)" />
-        public bool Remove(T item) {
+        public bool Remove([CanBeNull]T item) {
             return _set.Remove(item);
         }
 
@@ -187,7 +187,7 @@ namespace Jail.Common {
         }
 
         /// <inheritdoc cref="object.Equals(object)" />
-        public override bool Equals(object obj) {
+        public override bool Equals([CanBeNull]object obj) {
             return this._set.Equals(obj);
         }
 

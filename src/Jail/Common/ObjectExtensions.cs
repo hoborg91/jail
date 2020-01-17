@@ -8,14 +8,14 @@ namespace Jail.Common {
         /// <summary>
         /// Returns true if and only if the given object is null.
         /// </summary>
-        public static bool IsNull(this object obj) {
+        public static bool IsNull([CanBeNull]this object obj) {
             return obj == null;
         }
 
         /// <summary>
         /// Returns true if and only if the given object is not null.
         /// </summary>
-        public static bool IsNotNull(this object obj) {
+        public static bool IsNotNull([CanBeNull]this object obj) {
             return obj != null;
         }
 
@@ -24,7 +24,7 @@ namespace Jail.Common {
         /// <see cref="ArgumentNullException" />. Otherwise returns this parameter.
         /// </summary>
         public static T CheckArgumentNotNull<T>(
-            this T obj,
+            [CanBeNull]this T obj,
             string paramName = null
         )
             where T : class 

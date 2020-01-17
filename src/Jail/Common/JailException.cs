@@ -38,7 +38,7 @@ namespace Jail.Common {
         /// collection is too large and thus cannot be stored
         /// in the Int32 variable.
         /// </summary>
-        public NotSupportedInJailException(string message) 
+        public NotSupportedInJailException([CanBeNull]string message) 
             : base(message)
         {
 
@@ -52,8 +52,8 @@ namespace Jail.Common {
         /// in the Int32 variable.
         /// </summary>
         public NotSupportedInJailException(
-            string message,
-            Exception innerException
+            [CanBeNull]string message,
+            [CanBeNull]Exception innerException
         ) : base(message, innerException) {
         }
     }
@@ -67,7 +67,7 @@ namespace Jail.Common {
         /// The exception thrown by collection merging methods
         /// at the specific MergeDictionariesBehaviour options.
         /// </summary>
-        public MergeException(string message) : base(
+        public MergeException([CanBeNull]string message) : base(
             message
         ) {
 

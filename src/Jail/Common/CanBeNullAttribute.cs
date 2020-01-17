@@ -1,6 +1,6 @@
 using System;
 
-namespace Jail.HelpersForTests
+namespace Jail.Common
 {
     /// <summary>This attribute can be used to explicitly 
     /// express the nullability of the value.</summary>

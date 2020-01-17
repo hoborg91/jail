@@ -60,7 +60,7 @@ namespace Jail.Common {
         /// returns true. Otherwise, does nothing with the queue and
         /// returns false.
         /// </summary>
-        public bool Enqueue(T item) {
+        public bool Enqueue([CanBeNull]T item) {
             lock (this._chest) {
                 if (this.IsFull())
                     return false;

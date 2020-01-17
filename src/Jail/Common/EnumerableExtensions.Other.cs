@@ -70,19 +70,6 @@ namespace Jail.Common {
         /// at least 1 element and not more than <paramref name="batchSize"/> 
         /// elements. Other batches contain <paramref name="batchSize"/> elements.
         /// </summary>
-        [Obsolete("Use SplitIntoBatches method instead.")]
-        public static IEnumerable<IReadOnlyCollection<T>> SplitInChunks<T>(
-            this IEnumerable<T> collection,
-            int batchSize
-        ) {
-            return SplitIntoBatches(collection, batchSize);
-        }
-
-        /// <summary>
-        /// Splits the given collection in batches. The last batch contains 
-        /// at least 1 element and not more than <paramref name="batchSize"/> 
-        /// elements. Other batches contain <paramref name="batchSize"/> elements.
-        /// </summary>
         public static IEnumerable<IReadOnlyCollection<T>> SplitIntoBatches<T>(
             this IEnumerable<T> collection,
             int batchSize

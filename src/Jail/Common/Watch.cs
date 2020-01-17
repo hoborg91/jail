@@ -57,7 +57,7 @@ namespace Jail.Common {
         /// otherwise, default value of the containing elements
         /// type.
         /// </summary>
-        public T Enqueue(T item) {
+        public T Enqueue([CanBeNull]T item) {
             T result = default(T);
             lock (this._chest) {
                 if (this.IsFull())

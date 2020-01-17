@@ -44,6 +44,7 @@ namespace Jail.Common {
                 throw new ArgumentNullException(nameof(dictionary));
             if (otherDictionary == null)
                 throw new ArgumentNullException(nameof(otherDictionary));
+            
             return Merge(new[] { dictionary, otherDictionary, }, onConflict);
         }
 
@@ -59,6 +60,7 @@ namespace Jail.Common {
                 throw new ArgumentNullException(nameof(dictionaries));
             if (dictionaries.Any(x => x == null))
                 throw new ArgumentException($"All elements in the '{nameof(dictionaries)}' array must not be null.");
+            
             var result = new Dictionary<TKey, TValue>();
             foreach (var dict in dictionaries) {
                 foreach (var pair in dict) {
@@ -106,7 +108,7 @@ namespace Jail.Common {
         public static TValue AddOrModify<TKey, TValue>(
             this IDictionary<TKey, TValue> dictionary, 
             TKey key,
-            TValue value,
+            [CanBeNull]TValue value,
             Func<TValue, TValue> modifier
         ) {
             if (dictionary == null)
@@ -115,6 +117,7 @@ namespace Jail.Common {
                 throw new ArgumentNullException(nameof(key));
             if (modifier == null)
                 throw new ArgumentNullException(nameof(modifier));
+            
             if (dictionary.ContainsKey(key)) {
                 dictionary[key] = modifier(dictionary[key]);
                 return dictionary[key];
@@ -128,9 +131,14 @@ namespace Jail.Common {
         /// returns the corresponding value. Otherwise, returns
         /// the specified default value.
         /// </summary>
-        public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default(TValue)) {
+        public static TValue GetValueOrDefault<TKey, TValue>(
+            this IDictionary<TKey, TValue> dictionary, 
+            TKey key, 
+            TValue defaultValue = default(TValue)
+        ) {
             if (dictionary == null)
                 throw new ArgumentNullException(nameof(dictionary));
+            
             if (dictionary.ContainsKey(key))
                 return dictionary[key];
             return defaultValue;
@@ -145,10 +153,11 @@ namespace Jail.Common {
         public static TValue GetValueOrDefaultAndAdd<TKey, TValue>(
             this IDictionary<TKey, TValue> dictionary,
             TKey key,
-            TValue value
+            [CanBeNull]TValue value
         ) {
             if (dictionary == null)
                 throw new ArgumentNullException(nameof(dictionary));
+            
             if (dictionary.ContainsKey(key))
                 return dictionary[key];
             dictionary[key] = value;
