@@ -235,11 +235,11 @@ namespace Jail.Tests.UnitTestingTests {
 
         #endregion TestForNullArgumentsCheck
 
-        #region
+        #region TestForNullArgumentsCheck
 
         [Test]
-        public void T() {
-            var helper = new UnitTestsHelper<UnitTestsHelper>();
+        public void TestForNullArgumentsCheck_AllTypes_HelpersForTests() {
+            var helper = new UnitTestsHelper<HelpersForTests.CanBeNullAttribute>();
             var f = new Fixture();
             f.Customize(new AutoMoqCustomization());
             var fCtx = new SpecimenContext(f);
@@ -251,7 +251,33 @@ namespace Jail.Tests.UnitTestingTests {
             );
         }
 
-        #endregion
+        [Test]
+        public void TestForNullArgumentsCheck_AllTypes_Common() {
+            var helper = new UnitTestsHelper<Common.CanBeNullAttribute>();
+            var f = new Fixture();
+            f.Customize(new AutoMoqCustomization());
+            var fCtx = new SpecimenContext(f);
+            helper.TestForNullArgumentsCheck(
+                t => new[] { f.Create(t, fCtx), },
+                p => f.Create(p.ParameterType, fCtx),
+                cs => new[] { cs.Select(c => typeof(object)).ToArray() },
+                cs => new[] { cs.Select(c => typeof(object)).ToArray() }
+            );
+        }
+        
+        [Test]
+        public void TestForNullArgumentsCheck_WithTypeArgument() {
+            var helper = new UnitTestsHelper<UnitTestsHelper>();
+            var f = new Fixture();
+            f.Customize(new AutoMoqCustomization());
+            var fCtx = new SpecimenContext(f);
+            helper.TestForNullArgumentsCheck(
+                new Common.Set<object>(new[] { new object(), }),
+                p => f.Create(p.ParameterType, fCtx)
+            );
+        }
+
+        #endregion TestForNullArgumentsCheck
 
         private void _verifyTypesFinder(string typeName) {
             this._typesFinderMock.Verify(

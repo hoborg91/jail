@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -122,14 +123,15 @@ namespace Jail.HelpersForTests {
         /// Test all public methods in all public types in the assembly.
         /// Checks that every method throws <see cref="ArgumentNullException" /> 
         /// with appropriate message when it is called with null argument. 
-        /// Parameters marked with any attribute named CanBeNull do not require 
-        /// the throw of the exception.
+        /// Optional parameters with null default values and parameters marked 
+        /// with any attribute named CanBeNull do not require the throw of the 
+        /// exception.
         /// </summary>
         public void TestForNullArgumentsCheck(
             Func<Type, object[]> instancesFactory,
             Func<ParameterInfo, object> parametersFactory,
-            Func<ITypeArgumentContextForType[], IReadOnlyCollection<Type[]>> typeTypeArgumentsFactory = null,
-            Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> methodTypeArgumentsFactory = null
+            Func<ITypeArgumentContextForType[], IReadOnlyCollection<Type[]>> typeArgumentsFactoryForType = null,
+            Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> typeArgumentsFactoryForMethod = null
         ) {
             if (instancesFactory == null)
                 throw new ArgumentNullException(nameof(instancesFactory));
@@ -138,17 +140,19 @@ namespace Jail.HelpersForTests {
             
             var fails = new HashSet<MissingExceptionException>();
             var types = this._typesFinder.GetAllTypes()
-                .Where(t => t.IsPublic)
-                .SelectMany(t => this._makeTypes(t, typeTypeArgumentsFactory))
+                .Where(t => t.IsPublic && !t.IsInterface)
+                .SelectMany(t => this._makeTypes(t, typeArgumentsFactoryForType))
                 .ToList();
             foreach (var type in types) {
-                var instances = instancesFactory(type);
+                var instances = type.IsAbstract && type.IsSealed
+                    ? new object[] { null, }
+                    : instancesFactory(type);
                 foreach (var instance in instances) {
                     foreach (var fail in this._testForNullArgumentsCheck(
                         type, 
                         instance, 
                         parametersFactory,
-                        methodTypeArgumentsFactory
+                        typeArgumentsFactoryForMethod
                     ))
                         fails.Add(fail);
                 }
@@ -157,15 +161,17 @@ namespace Jail.HelpersForTests {
         }
 
         /// <summary>
-        /// Checks that public methods throw <see cref="ArgumentNullException" /> 
+        /// Test all public methods of the type specified as a type argument.
+        /// Checks that every method throws <see cref="ArgumentNullException" /> 
         /// with appropriate message when it is called with null argument. 
-        /// Parameters marked with any attribute named CanBeNull do not require 
-        /// the throw of the exception.
+        /// Optional parameters with null default values and parameters marked 
+        /// with any attribute named CanBeNull do not require the throw of the 
+        /// exception.
         /// </summary>
         public void TestForNullArgumentsCheck<T>(
             T instance,
             Func<ParameterInfo, object> parametersFactory,
-            Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> methodTypeArgumentsFactory = null
+            Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> typeArgumentsFactoryForMethod = null
         ) {
             if (instance == null)
                 throw new ArgumentNullException(nameof(instance));
@@ -178,25 +184,58 @@ namespace Jail.HelpersForTests {
                     $"generic type definition, when use {nameof(TestForNullArgumentsCheck)} " +
                     "with type argument.");
             this._throwIfFail(this._testForNullArgumentsCheck(
-                typeof(T), 
+                type, 
                 instance, 
                 parametersFactory,
-                methodTypeArgumentsFactory
+                typeArgumentsFactoryForMethod
             ));
         }
 
         /// <summary>
-        /// Checks that public methods throw <see cref="ArgumentNullException" /> 
+        /// Test all public methods of the specified type.
+        /// Checks that every method throws <see cref="ArgumentNullException" /> 
         /// with appropriate message when it is called with null argument. 
-        /// Parameters marked with any attribute named CanBeNull do not require 
-        /// the throw of the exception.
+        /// Optional parameters with null default values and parameters marked 
+        /// with any attribute named CanBeNull do not require the throw of the 
+        /// exception.
+        /// </summary>
+        public void TestForNullArgumentsCheck(
+            Type type,
+            [CanBeNull]object instance,
+            Func<ParameterInfo, object> parametersFactory,
+            Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> typeArgumentsFactoryForMethod = null
+        ) {
+            if (type == null)
+                throw new ArgumentNullException(nameof(type));
+            if (parametersFactory == null)
+                throw new ArgumentNullException(nameof(parametersFactory));
+            
+            if (type.IsGenericTypeDefinition)
+                throw new Exception("Specify completely defined type, not " + 
+                    $"generic type definition, when use {nameof(TestForNullArgumentsCheck)} " +
+                    "with type argument.");
+            this._throwIfFail(this._testForNullArgumentsCheck(
+                type, 
+                instance, 
+                parametersFactory,
+                typeArgumentsFactoryForMethod
+            ));
+        }
+
+        /// <summary>
+        /// Test all public methods of the specified type.
+        /// Checks that every method throws <see cref="ArgumentNullException" /> 
+        /// with appropriate message when it is called with null argument. 
+        /// Optional parameters with null default values and parameters marked 
+        /// with any attribute named CanBeNull do not require the throw of the 
+        /// exception.
         /// </summary>
         public void TestForNullArgumentsCheck(
             string typeName,
             object instance,
             Func<ParameterInfo, object> parametersFactory,
-            Func<ITypeArgumentContextForType[], IReadOnlyCollection<Type[]>> typeTypeArgumentsFactory = null,
-            Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> methodTypeArgumentsFactory = null
+            Func<ITypeArgumentContextForType[], IReadOnlyCollection<Type[]>> typeArgumentsFactoryForType = null,
+            Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> typeArgumentsFactoryForMethod = null
         ) {
             if (typeName == null)
                 throw new ArgumentNullException(nameof(typeName));
@@ -208,29 +247,31 @@ namespace Jail.HelpersForTests {
                 throw new ArgumentNullException(nameof(parametersFactory));
             
             var type = this._typesFinder.FindType(typeName);
-            foreach (var t in this._makeTypes(type, typeTypeArgumentsFactory)) {
+            foreach (var t in this._makeTypes(type, typeArgumentsFactoryForType)) {
                 this._throwIfFail(this._testForNullArgumentsCheck(
                     type, 
                     instance, 
                     parametersFactory,
-                    methodTypeArgumentsFactory
+                    typeArgumentsFactoryForMethod
                 ));
             }
         }
 
         /// <summary>
-        /// Checks that public methods throw <see cref="ArgumentNullException" /> 
+        /// Test all public methods of the specified type.
+        /// Checks that every method throws <see cref="ArgumentNullException" /> 
         /// with appropriate message when it is called with null argument. 
-        /// Parameters marked with any attribute named CanBeNull do not require 
-        /// the throw of the exception.
+        /// Optional parameters with null default values and parameters marked 
+        /// with any attribute named CanBeNull do not require the throw of the 
+        /// exception.
         /// </summary>
         public void TestForNullArgumentsCheck(
             string typeName,
             string typeNamespace,
             object instance,
             Func<ParameterInfo, object> parametersFactory,
-            Func<ITypeArgumentContextForType[], IReadOnlyCollection<Type[]>> typeTypeArgumentsFactory = null,
-            Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> methodTypeArgumentsFactory = null
+            Func<ITypeArgumentContextForType[], IReadOnlyCollection<Type[]>> typeArgumentsFactoryForType = null,
+            Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> typeArgumentsFactoryForMethod = null
         ) {
             if (typeName == null)
                 throw new ArgumentNullException(nameof(typeName));
@@ -246,12 +287,12 @@ namespace Jail.HelpersForTests {
                 throw new ArgumentNullException(nameof(parametersFactory));
 
             var type = this._typesFinder.FindType(typeName, typeNamespace);
-            foreach (var t in this._makeTypes(type, typeTypeArgumentsFactory)) {
+            foreach (var t in this._makeTypes(type, typeArgumentsFactoryForType)) {
                 this._throwIfFail(this._testForNullArgumentsCheck(
                     type, 
                     instance, 
                     parametersFactory,
-                    methodTypeArgumentsFactory
+                    typeArgumentsFactoryForMethod
                 ));
             }
         }
@@ -260,22 +301,30 @@ namespace Jail.HelpersForTests {
             Type type,
             object instance,
             Func<ParameterInfo, object> parametersFactory,
-            Func<TypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> methodTypeArgumentsFactory
+            Func<TypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> typeArgumentsFactoryForMethod
         ) {
             var typeName = type.Name;
-            var instanceType = instance.GetType();
-            if (!type.IsAssignableFrom(instanceType))
-                throw new ArgumentException($"The given instance of type \"{instanceType.Name}\" cannot be used " +
-                    $"as an instance of type \"{typeName}\".");
+            if (instance != null) {
+                var instanceType = instance.GetType();
+                if (!type.IsAssignableFrom(instanceType))
+                    throw new ArgumentException($"The given instance of type \"{instanceType.Name}\" cannot be used " +
+                        $"as an instance of type \"{typeName}\".");
+            }
 
             var publicInstanceMethods = type.GetMethods(BindingFlags.Public 
                                                       | BindingFlags.Instance 
                                                       | BindingFlags.DeclaredOnly
-            ).SelectMany(m => this._makeMethod(m, methodTypeArgumentsFactory));
+            ).SelectMany(m => this._makeMethod(m, typeArgumentsFactoryForMethod));
             var publicStaticMethods = type.GetMethods(BindingFlags.Public
                                                     | BindingFlags.Static
-            ).SelectMany(m => this._makeMethod(m, methodTypeArgumentsFactory));
+            ).SelectMany(m => this._makeMethod(m, typeArgumentsFactoryForMethod));
             var publicConstructors = type.GetConstructors();
+
+            var adsf = new MethodBase[0]
+                .Concat(publicInstanceMethods)
+                .Concat(publicStaticMethods)
+                .Concat(publicConstructors
+            ).Select(m => m.Name).OrderBy(m => m).ToList();
 
             ISet<MissingExceptionException> fails = new HashSet<MissingExceptionException>();
             foreach (var methodToTest in new MethodBase[0]
@@ -295,7 +344,7 @@ namespace Jail.HelpersForTests {
 
         private IEnumerable<Type> _makeTypes(
             Type type,
-            Func<TypeArgumentContextForType[], IReadOnlyCollection<Type[]>> typeTypeArgumentsFactory
+            Func<TypeArgumentContextForType[], IReadOnlyCollection<Type[]>> typeArgumentsFactoryForType
         ) {
             if (!type.IsGenericTypeDefinition) {
                 yield return type;
@@ -311,7 +360,7 @@ namespace Jail.HelpersForTests {
                 ))
                 .ToArray();
             
-            var typeArgumentsSets = typeTypeArgumentsFactory(typeArgumentsSignature);
+            var typeArgumentsSets = typeArgumentsFactoryForType(typeArgumentsSignature);
 
             if (!typeArgumentsSets.Any())
                 throw new Exception("No type arguments have been manufactured.");
@@ -327,7 +376,7 @@ namespace Jail.HelpersForTests {
 
         private IEnumerable<MethodBase> _makeMethod(
             MethodInfo methodInfo,
-            Func<TypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> methodTypeArgumentsFactory
+            Func<TypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> typeArgumentsFactoryForMethod
         ) {
             if (!methodInfo.IsGenericMethodDefinition) {
                 yield return methodInfo;
@@ -343,7 +392,7 @@ namespace Jail.HelpersForTests {
                 ))
                 .ToArray();
             
-            var typeArgumentsSets = methodTypeArgumentsFactory(typeArgumentsSignature);
+            var typeArgumentsSets = typeArgumentsFactoryForMethod(typeArgumentsSignature);
 
             if (!typeArgumentsSets.Any())
                 throw new Exception("No type arguments have been manufactured.");
@@ -459,7 +508,8 @@ namespace Jail.HelpersForTests {
                 string.Join(", ", methodToTest.GetParameters().Select(p => $"{p.ParameterType.Name} {p.Name}")) + ")";
             Exception registeredException = null;
             try {
-                methodToTest.Invoke(instance, arguments);
+                var result = methodToTest.Invoke(instance, arguments);
+                this._enumerateOnceIfNecessary(methodToTest, result);
             } catch(TargetInvocationException tie) {
                 registeredException = tie.InnerException;
             }
@@ -486,6 +536,41 @@ namespace Jail.HelpersForTests {
                 );
             }
             return null;
+        }
+
+        private void _enumerateOnceIfNecessary(
+            MethodBase methodToTest,
+            object returnedValue
+        ) {
+            if (!(methodToTest is MethodInfo methodInfo))
+                return;
+            
+            object enumerator = null;
+            var returnType = methodInfo.ReturnType;
+            if (returnType.IsGenericType) {
+                if (returnType.GetGenericTypeDefinition() == typeof(IEnumerable<>)) {
+                    enumerator = returnType
+                        .GetMethod(nameof(IEnumerable<object>.GetEnumerator))
+                        .Invoke(returnedValue, Array.Empty<object>());
+                } else if (returnType.GetGenericTypeDefinition() == typeof(IEnumerator<>)) {
+                    enumerator = returnedValue;
+                }
+            } else {
+                if (returnType == typeof(IEnumerable)) {
+                    enumerator = returnType
+                        .GetMethod(nameof(IEnumerable.GetEnumerator))
+                        .Invoke(returnedValue, Array.Empty<object>());
+                } else if (returnType == typeof(IEnumerator)) {
+                    enumerator = returnedValue;
+                }
+            }
+
+            if (enumerator == null)
+                return;
+
+            typeof(IEnumerator)
+                .GetMethod(nameof(IEnumerator.MoveNext))
+                .Invoke(enumerator, Array.Empty<object>());
         }
 
         #endregion Test methods for null arguments check
