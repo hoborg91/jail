@@ -8,7 +8,7 @@ namespace Jail.Common {
         /// <summary>
         /// A common class for exceptions in the library.
         /// </summary>
-        public JailException(string message)
+        protected JailException(string message)
             : base(message)
         {
 
@@ -17,7 +17,7 @@ namespace Jail.Common {
         /// <summary>
         /// A common class for exceptions in the library.
         /// </summary>
-        public JailException(string message, Exception innerException)
+        protected JailException(string message, Exception innerException)
             : base(message, innerException) {
 
         }
