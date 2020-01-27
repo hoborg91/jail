@@ -8,6 +8,7 @@ using Jail.Design.Annotations;
 using AutoFixture;
 using AutoFixture.Kernel;
 using AutoFixture.AutoMoq;
+using Jail.HelpersForTests.Exceptions;
 
 namespace Jail.Tests.UnitTestingTests {
     [TestFixture]

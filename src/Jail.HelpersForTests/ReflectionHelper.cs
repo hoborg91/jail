@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using Jail.HelpersForTests.Exceptions;
 
 namespace Jail.HelpersForTests {
     internal class ReflectionHelper : IReflectionHelper {

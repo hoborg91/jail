@@ -1,11 +1,12 @@
 ﻿using System;
 
-namespace Jail.HelpersForTests {
+namespace Jail.HelpersForTests.Exceptions
+{
     /// <summary>
     /// This exception is thrown when some code has not thrown 
     /// the expected exception.
     /// </summary>
-    public class MissingExceptionException : Exception {
+    public class MissingExceptionException : JailHelpersForTestsExceptionBase {
         /// <summary>
         /// This exception is thrown when some code has not thrown 
         /// the expected exception.

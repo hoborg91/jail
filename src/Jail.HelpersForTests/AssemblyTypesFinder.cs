@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Jail.HelpersForTests.Exceptions;
 
 namespace Jail.HelpersForTests {
     internal class AssemblyTypesFinder : IAssemblyTypesFinder {
@@ -28,10 +29,10 @@ namespace Jail.HelpersForTests {
                 )
                 .ToList();
             if (types.Count == 0)
-                throw new Exception("Cannot find a type with " +
+                throw new TypeResolutionException("Cannot find a type with " +
                     $"the given name \"{typeName}\" in the assembly \"{this._assembly}\".");
             if (types.Count > 1)
-                throw new Exception($"There are {types.Count} " +
+                throw new TypeResolutionException($"There are {types.Count} " +
                     $"types with name \"{typeName}\" in the assembly \"{this._assembly}\" " +
                      "(in different namespaces). Cannot choose the right one. Consider " +
                      "specifying the namespace parameter.");

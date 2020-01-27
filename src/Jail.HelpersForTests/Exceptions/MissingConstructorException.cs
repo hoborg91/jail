@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Jail.HelpersForTests {
+namespace Jail.HelpersForTests.Exceptions {
     /// <summary>
     /// The exception indicating that the searched constructor is absent.
     /// </summary>
-    public class MissingConstructorException : Exception {
+    public class MissingConstructorException : JailHelpersForTestsExceptionBase {
         /// <summary>
         /// The exception indicating that the searched constructor is absent.
         /// </summary>
