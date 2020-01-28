@@ -40,52 +40,63 @@ namespace Jail.Tests.UnitTestingTests {
         [Test]
         public void New() {
             // Arrange
-            var (sut, typeName, constructorArguments) =
-                this._prepareCommonTestCase();
+            var tc = this._prepareCommonTestCase();
 
             // Act
-            sut.New<IStub>(typeName, constructorArguments);
+            tc.Sut.New<IStub>(tc.TypeName, tc.ConstructorArguments);
 
             // Assert
-            this._verifyTypesFinder(typeName);
+            this._verifyTypesFinder(tc.TypeName, null);
             this._reflectionHelperMock.Verify(x => x.New<IStub>(
                 It.IsAny<Type>(),
-                constructorArguments), Times.Once);
+                tc.ConstructorArguments), Times.Once);
+        }
+
+        [Test]
+        public void New_WithNamespace() {
+            // Arrange
+            var tc = this._prepareCommonTestCase();
+
+            // Act
+            tc.Sut.New<IStub>(tc.TypeName, tc.TypeNamespace, tc.ConstructorArguments);
+
+            // Assert
+            this._verifyTypesFinder(tc.TypeName, tc.TypeNamespace);
+            this._reflectionHelperMock.Verify(x => x.New<IStub>(
+                It.IsAny<Type>(),
+                tc.ConstructorArguments), Times.Once);
         }
 
         [Test]
         public void New_ThrowsOnNullArg_0() {
             // Arrange
-            var (sut, typeName, constructorArguments) =
-                this._prepareCommonTestCase();
+            var tc = this._prepareCommonTestCase();
 
             // Act, Assert
             Assert.Throws<ArgumentNullException>(() => 
-                sut.New<IStub>(null, "ns", constructorArguments)
+                tc.Sut.New<IStub>(null, tc.TypeNamespace, tc.ConstructorArguments)
             );
         }
 
         [Test]
         public void New_ThrowsOnNullArg_1() {
             // Arrange
-            var (sut, typeName, constructorArguments) =
-                this._prepareCommonTestCase();
+            var tc = this._prepareCommonTestCase();
 
             // Act, Assert
             Assert.Throws<ArgumentNullException>(() => 
-                sut.New<IStub>(typeName, null, constructorArguments)
+                tc.Sut.New<IStub>(tc.TypeName, null, tc.ConstructorArguments)
             );
         }
 
         [Test]
         public void New_ThrowsOnNullArg_2() {
             // Arrange
-            var (sut, typeName, constructorArguments) =
-                this._prepareCommonTestCase();
+            var tc = this._prepareCommonTestCase();
 
             // Act, Assert
             Assert.Throws<ArgumentNullException>(() => 
-                sut.New<IStub>(typeName, "ns", null)
+                tc.Sut.New<IStub>(tc.TypeName, tc.TypeNamespace, null)
             );
         }
 
@@ -280,24 +291,42 @@ namespace Jail.Tests.UnitTestingTests {
 
         #endregion TestForNullArgumentsCheck
 
-        private void _verifyTypesFinder(string typeName) {
+        private void _verifyTypesFinder(
+            string typeName,
+            string typeNamespace
+        ) {
             this._typesFinderMock.Verify(
                 x => x.FindType(
                     typeName,
-                    null
+                    typeNamespace
                 ), 
                 Times.Once
             );
         }
 
-        private (UnitTestsHelper, string, object[]) _prepareCommonTestCase() {
+        private TestSetup _prepareCommonTestCase() {
             var sut = this._getSut(
                 this._typesFinderMock.Object,
                 this._reflectionHelperMock.Object
             );
             var typeName = "Type";
             var constructorArguments = new object[] { new object(), };
-            return (sut, typeName, constructorArguments);
+            return new TestSetup {
+                Sut = sut, 
+                TypeName = typeName, 
+                TypeNamespace = "System",
+                ConstructorArguments = constructorArguments,
+            };
+        }
+
+        private class TestSetup {
+            public UnitTestsHelper Sut { get; set; }
+
+            public string TypeName { get; set; }
+
+            public string TypeNamespace { get; set; }
+
+            public object[] ConstructorArguments { get; set; }
         }
 
         private interface IStub { }
