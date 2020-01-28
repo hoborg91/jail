@@ -8,30 +8,6 @@ namespace Jail.Tests.MathClassesTests {
     [TestFixture]
     public class EnumerableExtensionsForMathTests {
         [Test]
-        public void Test_NeumaierSum_Throws_WhenNullArgument_Float() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() =>
-                EnumerableExtensionsForMath.NeumaierSum((IList<float>)null)
-            );
-        }
-
-        [Test]
-        public void Test_NeumaierSum_Throws_WhenNullArgument_Double() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() =>
-                EnumerableExtensionsForMath.NeumaierSum((IList<double>)null)
-            );
-        }
-
-        [Test]
-        public void Test_NeumaierSum_Throws_WhenNullArgument_Decimal() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() =>
-                EnumerableExtensionsForMath.NeumaierSum((IList<decimal>)null)
-            );
-        }
-
-        [Test]
         public void Test_NeumaierSum_EqualsSum_Float() {
             // Arrange
             var input = new float[] { -1000.001f, -1000, -1.1f, -1, -0.001f, 0, 0.001f, 1, 1.1f, 1000, 1000.001f, };

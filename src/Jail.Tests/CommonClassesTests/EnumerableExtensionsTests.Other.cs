@@ -10,14 +10,6 @@ namespace CilTests.CommonClassesTests {
         #region IsEmpty
 
         [Test]
-        public void Test_IsEmpty_ForIEnumerable_Throws_OnNullArgument() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                EnumerableExtensions.IsEmpty((IEnumerable<int>)null);
-            });
-        }
-
-        [Test]
         public void Test_IsEmpty_ForIEnumerable_True() {
             // Arrange
             var emptyCollection = new int[0];
@@ -39,14 +31,6 @@ namespace CilTests.CommonClassesTests {
 
             // Assert
             Assert.IsFalse(result);
-        }
-
-        [Test]
-        public void Test_IsEmpty_ForICollection_Throws_OnNullArgument() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                EnumerableExtensions.IsEmpty((ICollection<int>)null);
-            });
         }
 
         [Test]
@@ -196,22 +180,6 @@ namespace CilTests.CommonClassesTests {
         #endregion EqualsAsMultiset
 
         #region JoinBy
-
-        [Test]
-        public void Test_JoinBy_Throws_OnNullArgument_1() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                EnumerableExtensions.JoinBy(null, ",");
-            });
-        }
-
-        [Test]
-        public void Test_JoinBy_Throws_OnNullArgument_2() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                EnumerableExtensions.JoinBy(Array.Empty<string>(), null);
-            });
-        }
 
         [Test]
         public void Test_JoinBy_Empty() {

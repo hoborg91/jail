@@ -67,39 +67,6 @@ namespace Jail.Tests.UnitTestingTests {
                 tc.ConstructorArguments), Times.Once);
         }
 
-        [Test]
-        public void New_ThrowsOnNullArg_0() {
-            // Arrange
-            var tc = this._prepareCommonTestCase();
-
-            // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => 
-                tc.Sut.New<IStub>(null, tc.TypeNamespace, tc.ConstructorArguments)
-            );
-        }
-
-        [Test]
-        public void New_ThrowsOnNullArg_1() {
-            // Arrange
-            var tc = this._prepareCommonTestCase();
-
-            // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => 
-                tc.Sut.New<IStub>(tc.TypeName, null, tc.ConstructorArguments)
-            );
-        }
-
-        [Test]
-        public void New_ThrowsOnNullArg_2() {
-            // Arrange
-            var tc = this._prepareCommonTestCase();
-
-            // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => 
-                tc.Sut.New<IStub>(tc.TypeName, tc.TypeNamespace, null)
-            );
-        }
-
         #endregion New
 
         #region TestForNullArgumentsCheck

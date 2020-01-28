@@ -118,42 +118,6 @@ namespace Jail.Tests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_AddOrModify_ThrowsOnNullArgument1() {
-            // Arrange, act, assert
-            Assert.Throws<ArgumentNullException>(() => {
-                DictionaryExtensions.AddOrModify(
-                    null,
-                    string.Empty,
-                    0,
-                    v => 0);
-            });
-        }
-
-        [Test]
-        public void Test_AddOrModify_ThrowsOnNullArgument2() {
-            // Arrange, act, assert
-            Assert.Throws<ArgumentNullException>(() => {
-                DictionaryExtensions.AddOrModify(
-                    new Dictionary<string, int>(),
-                    null,
-                    0,
-                    v => 0);
-            });
-        }
-
-        [Test]
-        public void Test_AddOrModify_ThrowsOnNullArgument3() {
-            // Arrange, act, assert
-            Assert.Throws<ArgumentNullException>(() => {
-                DictionaryExtensions.AddOrModify(
-                    new Dictionary<string, int>(),
-                    string.Empty,
-                    0,
-                    null);
-            });
-        }
-
-        [Test]
         public void Test_AddOrModify_Add() {
             // Arrange
             var dict = new Dictionary<string, int>();

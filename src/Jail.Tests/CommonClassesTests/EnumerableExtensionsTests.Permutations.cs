@@ -8,33 +8,6 @@ namespace CilTests.CommonClassesTests {
     [TestFixture]
     public partial class EnumerableExtensionsTests {
         [Test]
-        public void Test_Combinations_Throws_OnNullArgument1() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                EnumerableExtensions.Combinations(
-                    (int[][])null,
-                    vector => Tuple.Create(vector[0], vector[1])
-                ).ToList();
-            });
-        }
-
-        [Test]
-        public void Test_Combinations_Throws_OnNullArgument2() {
-            // Arrange
-            var collection = new[] {
-                new int[] { 0, },
-            };
-
-            // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                EnumerableExtensions.Combinations(
-                    collection,
-                    (Func<int[], object>)null
-                ).ToList();
-            });
-        }
-
-        [Test]
         public void Test_Combinations_Throws_OnArgument1ContainingNulls() {
             // Arrange
             var collection = new[] {
@@ -117,14 +90,6 @@ namespace CilTests.CommonClassesTests {
             ) {
 
             }
-        }
-
-        [Test]
-        public void Test_Permutations_ThrowsOnNullArgument() {
-            // Arrange, act, assert
-            Assert.Throws<ArgumentNullException>(() => {
-                EnumerableExtensions.Permutations<int>(null);
-            });
         }
 
         [Test]
