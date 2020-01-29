@@ -1,6 +1,7 @@
 ﻿using Jail.Common;
 using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,7 +9,7 @@ namespace CilTests.CommonClassesTests {
     [TestFixture]
     public class CycleTests {
         [Test]
-        public void Test_CycleCtor_WrongArgument_Null() {
+        public void Ctor_WrongArgument_Null() {
             // Arrange, Act, Assert
             Assert.Throws<ArgumentNullException>(() => {
                 var cycle = new Cycle<int>(null);
@@ -16,7 +17,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_CycleCtor_WrongArgument_Empty() {
+        public void Ctor_WrongArgument_Empty() {
             // Arrange, Act, Assert
             Assert.Throws<ArgumentException>(() => {
                 var cycle = new Cycle<int>(new int[0]);
@@ -24,7 +25,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_CycleCount() {
+        public void Count() {
             // Arrange
             var range = Enumerable.Range(0, 3).ToArray();
             var cycle = new Cycle<int>(range);
@@ -37,7 +38,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_CycleNext() {
+        public void Next() {
             // TODO TESTCASES. Refactor: introduce method parameter (step)
             // and fill with help of attribute or some test cases
             // data source. Remove the cycle.
@@ -60,7 +61,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_CycleGetCurrentAndMoveToNext() {
+        public void GetCurrentAndMoveToNext() {
             // TODO TESTCASES. Refactor: introduce method parameter (step)
             // and fill with help of attribute or some test cases
             // data source. Remove the cycle.
@@ -82,7 +83,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_CycleSetToIndex() {
+        public void SetToIndex() {
             // Arrange
             var count = 3;
             Assert.IsTrue(count > 0);
@@ -101,7 +102,26 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_CycleSetToCondition() {
+        public void SetToIndex_Overflow() {
+            // Arrange
+            var count = 3;
+            Assert.IsTrue(count > 0);
+            var range = Enumerable.Range(0, count).ToArray();
+            var cycle = new Cycle<int>(range);
+
+            // Act, Assert
+            foreach (var i in range) {
+                cycle.SetTo(count + i);
+                Assert.AreEqual(range[i], cycle.Current);
+                if (i == 0)
+                    continue;
+                cycle.SetTo(-i - count);
+                Assert.AreEqual(range[count - i], cycle.Current);
+            }
+        }
+
+        [Test]
+        public void SetToCondition() {
             // Arrange
             var count = 6;
             var range = Enumerable.Range(0, count).ToArray();
@@ -117,7 +137,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_CycleSetToCondition_WrongArgumentNull() {
+        public void SetToCondition_WrongArgumentNull() {
             // Arrange
             var count = 6;
             var range = Enumerable.Range(0, count).ToArray();
@@ -131,7 +151,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_CycleSetToCondition_NoSatisfyingElementsException() {
+        public void SetToCondition_NoSatisfyingElementsException() {
             // Arrange
             var count = 6;
             var range = Enumerable.Range(0, count).ToArray();
@@ -145,9 +165,9 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_Cycle_AsIEnumerable() {
+        public void AsIEnumerable() {
             // Arrange
-            var cycle = new Cycle<int>(new int[] { 1 });
+            IEnumerable cycle = new Cycle<int>(new int[] { 1 });
 
             // Act
             var enumerator = cycle.GetEnumerator();
@@ -158,6 +178,20 @@ namespace CilTests.CommonClassesTests {
                 typeof(CyclicEnumerator<int>),
                 enumerator.GetType()
             );
+        }
+
+        [Test]
+        public void Test_ToString() {
+            // Arrange
+            var underlyingCollection = new int[] { 1 };
+            var cycle = new Cycle<int>(underlyingCollection);
+            var expectedStr = underlyingCollection.ToString();
+
+            // Act
+            var result = cycle.ToString();
+
+            // Assert
+            Assert.AreEqual(expectedStr, result);
         }
     }
 }
