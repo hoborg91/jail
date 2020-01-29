@@ -50,14 +50,6 @@ namespace Jail.Tests.CommonClassesTests {
         }
 
         [Test]
-        public void CheckArgumentNotNull() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                ObjectExtensions.CheckArgumentNotNull((object)null);
-            });
-        }
-
-        [Test]
         public void CheckArgumentNotNull_WithParamName() {
             // Arrange, Act, Assert
             string paramName = "test";

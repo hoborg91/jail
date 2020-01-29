@@ -120,14 +120,6 @@ namespace Jail.Tests.CommonClassesTests {
         #region GetDeterministicHashCode
 
         [Test]
-        public void GetDeterministicHashCode_ThrowsOnNullArtument() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() =>
-                StringExtensions.GetDeterministicHashCode(null)
-            );
-        }
-
-        [Test]
         public void GetDeterministicHashCode_EmptyString() {
             // Arrange
             var str = string.Empty;

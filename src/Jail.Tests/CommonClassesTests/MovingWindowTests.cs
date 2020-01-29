@@ -27,14 +27,6 @@ namespace CilTests.CommonClassesTests {
             });
         }
 
-        [Test]
-        public void Ctor_Fails_WrongArgument2() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                this._makeSut(1, (int[])null);
-            });
-        }
-
         #endregion IsExhausted
 
         #region GetSnapshot
@@ -207,19 +199,7 @@ namespace CilTests.CommonClassesTests {
             // Act, Assert
             Assert.IsTrue(sut.IsExhausted());
             sut.ExtendTo(sequence.Skip(1).Take(1));
-            Assert.IsFalse(sut.IsExhausted());
-            
-        }
-
-        [Test]
-        public void ExtendTo_Fails_WrongArgument() {
-            // Arrange
-            var sut = this._makeSut(1, new int[0]);
-
-            // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                sut.ExtendTo(null);
-            });
+            Assert.IsFalse(sut.IsExhausted());   
         }
 
         [Test]

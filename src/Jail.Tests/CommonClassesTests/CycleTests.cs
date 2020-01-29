@@ -9,14 +9,6 @@ namespace CilTests.CommonClassesTests {
     [TestFixture]
     public class CycleTests {
         [Test]
-        public void Ctor_WrongArgument_Null() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                var cycle = new Cycle<int>(null);
-            });
-        }
-
-        [Test]
         public void Ctor_WrongArgument_Empty() {
             // Arrange, Act, Assert
             Assert.Throws<ArgumentException>(() => {
@@ -134,20 +126,6 @@ namespace CilTests.CommonClassesTests {
             cycle.Next();
             cycle.SetTo(condition);
             Assert.AreEqual(1, cycle.Current);
-        }
-
-        [Test]
-        public void SetToCondition_WrongArgumentNull() {
-            // Arrange
-            var count = 6;
-            var range = Enumerable.Range(0, count).ToArray();
-            var cycle = new Cycle<int>(range);
-            var condition = (Func<int, bool>)(i => i % 3 == 1);
-
-            // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                cycle.SetTo(null);
-            });
         }
 
         [Test]

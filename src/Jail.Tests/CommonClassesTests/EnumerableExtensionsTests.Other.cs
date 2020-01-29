@@ -59,57 +59,7 @@ namespace CilTests.CommonClassesTests {
 
         #endregion IsEmpty
 
-        #region ToSomething
-
-        [Test]
-        public void Test_ToQueue_WrongArgument_Null() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                EnumerableExtensions.ToQueue((IReadOnlyCollection<int>)null);
-            });
-        }
-
-        [Test]
-        public void Test_ToCycle_WrongArgument_Null() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                EnumerableExtensions.ToCycle((IReadOnlyList<int>)null);
-            });
-        }
-
-        [Test]
-        public void Test_ToSet_WrongArgument_Null() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                EnumerableExtensions.ToSet((IReadOnlyCollection<int>)null);
-            });
-        }
-
-        #endregion ToSomething
-
         #region EqualsAsMultiset
-
-        [Test]
-        public void Test_EqualsAsMultiset_WrongArgument_Null1() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                EnumerableExtensions.EqualsAsMultiset(
-                    null,
-                    new int[0]
-                );
-            });
-        }
-
-        [Test]
-        public void Test_EqualsAsMultiset_WrongArgument_Null2() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                EnumerableExtensions.EqualsAsMultiset(
-                    new int[0],
-                    null
-                );
-            });
-        }
 
         [Test]
         public void Test_EqualsAsMultiset() {
@@ -207,28 +157,6 @@ namespace CilTests.CommonClassesTests {
         #endregion JoinBy
 
         #region ContainsAny
-
-        [Test]
-        public void Test_ContainsAny_WrongArgumentNull_1() {
-            // Arrange, act, assert
-            Assert.Throws<ArgumentNullException>(() => {
-                EnumerableExtensions.ContainsAny(
-                    null,
-                    0, 1, 2
-                );
-            });
-        }
-
-        [Test]
-        public void Test_ContainsAny_WrongArgumentNull_2() {
-            // Arrange, act, assert
-            Assert.Throws<ArgumentNullException>(() => {
-                EnumerableExtensions.ContainsAny(
-                    new[] { 0, 1, 2, },
-                    null
-                );
-            });
-        }
 
         [Test]
         public void Test_ContainsAny() {
@@ -361,15 +289,6 @@ namespace CilTests.CommonClassesTests {
         #endregion RangeOfDoubles
 
         #region SplitIntoBatches
-
-        [Test]
-        public void Test_SplitIntoBatches_ThrowsOnNullCollection() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                EnumerableExtensions.SplitIntoBatches((IEnumerable<int>)null, 1)
-                    .ToList();
-            });
-        }
 
         [Test]
         public void Test_SplitIntoBatches_ThrowsOnZeroBatchSize() {

@@ -8,14 +8,6 @@ namespace Jail.Tests.CommonClassesTests {
     [TestFixture]
     public class CyclicEnumeratorTests {
         [Test]
-        public void CtorThrowsOnNullArgument() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                new CyclicEnumerator<int>(null);
-            });
-        }
-
-        [Test]
         public void EmptyCycle() {
             // Arrange
             var cycle = new CyclicEnumerator<int>(new int[0]);

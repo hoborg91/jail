@@ -7,38 +7,6 @@ namespace CilTests.CommonClassesTests {
     [TestFixture]
     public partial class DictionaryExtensionsTests {
         [Test]
-        public void Test_MergeTwoDictionaries_WrongArgument_Null1() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                DictionaryExtensions.Merge(
-                    null,
-                    new Dictionary<int, int>()
-                );
-            });
-        }
-
-        [Test]
-        public void Test_MergeTwoDictionaries_WrongArgument_Null2() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                DictionaryExtensions.Merge(
-                    new Dictionary<int, int>(),
-                    null
-                );
-            });
-        }
-
-        [Test]
-        public void Test_MergeDictionaries_WrongArgument_Null() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                DictionaryExtensions.Merge(
-                    (IDictionary<int, int>[])null
-                );
-            });
-        }
-
-        [Test]
         public void Test_MergeDictionaries_WrongArgument_ContainsNull() {
             // Arrange, Act, Assert
             Assert.Throws<ArgumentException>(() => {

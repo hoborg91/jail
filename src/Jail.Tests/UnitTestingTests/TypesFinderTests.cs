@@ -8,26 +8,6 @@ namespace Jail.Tests.UnitTestingTests {
     [TestFixture]
     public class TypesFinderTests {
         [Test]
-        public void Test_Ctor_ThrowsOnNullArgument() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                new AssemblyTypesFinder(null);
-            });
-        }
-
-        [Test]
-        public void Test_FindType_ThrowsOnNullArgument() {
-            // Arrange
-            var assembly = Assembly.GetExecutingAssembly();
-            var sut = new AssemblyTypesFinder(assembly);
-
-            // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                sut.FindType(null);
-            });
-        }
-
-        [Test]
         public void Test_FindType_ThrowsOnWrongArgument() {
             // Arrange
             var assembly = Assembly.GetExecutingAssembly();

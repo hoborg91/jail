@@ -6,16 +6,6 @@ using System.Collections.Generic;
 namespace Jail.Tests.CommonClassesTests {
     [TestFixture]
     public partial class DictionaryExtensionsTests {
-        [Test]
-        public void Test_GetValueOrDefault_WrongArgument_Null() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                DictionaryExtensions.GetValueOrDefault(
-                    (IDictionary<int, int>)null,
-                    1
-                );
-            });
-        }
 
         [Test]
         public void Test_GetValueOrDefault_KeyExists() {
@@ -59,18 +49,6 @@ namespace Jail.Tests.CommonClassesTests {
 
             // Assert
             Assert.AreEqual(expectedValue, value);
-        }
-
-        [Test]
-        public void Test_GetValueOrDefaultAndAdd_WrongArgument_Null() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                DictionaryExtensions.GetValueOrDefaultAndAdd(
-                    null,
-                    0,
-                    0
-                );
-            });
         }
 
         [Test]

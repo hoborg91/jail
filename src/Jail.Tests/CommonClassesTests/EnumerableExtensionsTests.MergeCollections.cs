@@ -8,16 +8,6 @@ namespace CilTests.CommonClassesTests {
     [TestFixture]
     public partial class EnumerableExtensionsTests {
         [Test]
-        public void Test_MergeCollections_WrongArgument_Null() {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() => {
-                EnumerableExtensions.Merge(
-                    (IList<IList<int>>)null
-                );
-            });
-        }
-
-        [Test]
         public void Test_MergeCollections_WrongArgument_ContainsNull() {
             // Arrange, Act, Assert
             Assert.Throws<ArgumentException>(() => {
