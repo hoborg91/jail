@@ -132,7 +132,8 @@ namespace Jail.HelpersForTests {
             Func<Type, object[]> instancesFactory,
             Func<ParameterInfo, object> parametersFactory,
             Func<ITypeArgumentContextForType[], IReadOnlyCollection<Type[]>> typeArgumentsFactoryForType = null,
-            Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> typeArgumentsFactoryForMethod = null
+            Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> typeArgumentsFactoryForMethod = null,
+            bool testNonPublicTypesAlso = false
         ) {
             if (instancesFactory == null)
                 throw new ArgumentNullException(nameof(instancesFactory));
@@ -141,7 +142,9 @@ namespace Jail.HelpersForTests {
             
             var fails = new HashSet<MissingExceptionException>();
             var types = this._typesFinder.GetAllTypes()
-                .Where(t => t.IsPublic && !t.IsInterface)
+                .Where(t => !t.IsInterface &&
+                    (testNonPublicTypesAlso || t.IsPublic)
+                )
                 .SelectMany(t => this._makeTypes(t, typeArgumentsFactoryForType))
                 .ToList();
             foreach (var type in types) {
@@ -149,12 +152,13 @@ namespace Jail.HelpersForTests {
                     ? new object[] { null, }
                     : instancesFactory(type);
                 foreach (var instance in instances) {
-                    foreach (var fail in this._testForNullArgumentsCheck(
+                    var failsForInstance = this._testForNullArgumentsCheck(
                         type, 
                         instance, 
                         parametersFactory,
                         typeArgumentsFactoryForMethod
-                    ))
+                    );
+                    foreach (var fail in failsForInstance)
                         fails.Add(fail);
                 }
             }
@@ -181,9 +185,9 @@ namespace Jail.HelpersForTests {
 
             var type = typeof(T);
             if (type.IsGenericTypeDefinition)
-                throw new Exception("Specify completely defined type, not " + 
+                throw new TypeResolutionException("Specify completely defined type, not " + 
                     $"generic type definition, when use {nameof(TestForNullArgumentsCheck)} " +
-                    "with type argument.");
+                    "with type argument or with type object.");
             this._throwIfFail(this._testForNullArgumentsCheck(
                 type, 
                 instance, 
@@ -214,7 +218,7 @@ namespace Jail.HelpersForTests {
             if (type.IsGenericTypeDefinition)
                 throw new Exception("Specify completely defined type, not " + 
                     $"generic type definition, when use {nameof(TestForNullArgumentsCheck)} " +
-                    "with type argument.");
+                    "with type argument or with type object.");
             this._throwIfFail(this._testForNullArgumentsCheck(
                 type, 
                 instance, 
@@ -337,7 +341,7 @@ namespace Jail.HelpersForTests {
                 var validArguments = methodToTestParameters
                     .Select(parametersFactory)
                     .ToArray();
-                foreach (var e in _testMethodForNullArgumentsCheck(typeName, instance, methodToTest, validArguments))
+                foreach (var e in this._testMethodForNullArgumentsCheck(typeName, instance, methodToTest, validArguments))
                     fails.Add(e);
             }
             return fails;
@@ -419,6 +423,11 @@ namespace Jail.HelpersForTests {
                 Type[] typeConstraints, 
                 GenericParameterAttributes genericParameterAttributes
             ) {
+                if (typeArgument == null)
+                    throw new ArgumentNullException(nameof(typeArgument));
+                if (typeConstraints == null)
+                    throw new ArgumentNullException(nameof(typeConstraints));
+                
                 this.TypeArgument = typeArgument;
                 this.TypeConstraints = typeConstraints;
                 this.GenericParameterAttributes = genericParameterAttributes;
@@ -441,6 +450,9 @@ namespace Jail.HelpersForTests {
                 typeConstraints, 
                 genericParameterAttributes
             ) {
+                if (genericTypeDefinition == null)
+                    throw new ArgumentNullException(nameof(genericTypeDefinition));
+                
                 this.GenericTypeDefinition = genericTypeDefinition;
             }
         }
@@ -461,6 +473,9 @@ namespace Jail.HelpersForTests {
                 typeConstraints, 
                 genericParameterAttributes
             ) {
+                if (genericMethodDefinition == null)
+                    throw new ArgumentNullException(nameof(genericMethodDefinition));
+                
                 this.GenericMethodDefinition = genericMethodDefinition;
             }
         }

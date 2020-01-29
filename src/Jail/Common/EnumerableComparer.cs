@@ -72,15 +72,19 @@ namespace Jail.Common {
                 this._cmp = Enumerable.SequenceEqual;
             }
 
-            public StrictEnumerableComparerOf(Func<IEnumerable<T>, IEnumerable<T>, bool> cmp) {
+            public StrictEnumerableComparerOf(
+                Func<IEnumerable<T>, IEnumerable<T>, bool> cmp
+            ) {
+                if (cmp == null)
+                    throw new ArgumentNullException(nameof(cmp));
                 this._cmp = cmp;
             }
 
-            public bool Equals(IEnumerable<T> x, IEnumerable<T> y) {
-                return this._cmp(x, y);// Enumerable.SequenceEqual(x, y);
+            public bool Equals([CanBeNull]IEnumerable<T> x, [CanBeNull]IEnumerable<T> y) {
+                return this._cmp(x, y);
             }
 
-            public int GetHashCode(IEnumerable<T> collection) {
+            public int GetHashCode([CanBeNull]IEnumerable<T> collection) {
                 if (collection == null)
                     return 0;
                 return collection.Aggregate(
@@ -97,11 +101,15 @@ namespace Jail.Common {
                 this._cmp = EnumerableExtensions.EqualsAsMultisetUsingEquals;
             }
 
-            public MultisetEnumerableComparerOf(Func<IEnumerable<T>, IEnumerable<T>, bool> cmp) {
+            public MultisetEnumerableComparerOf(
+                Func<IEnumerable<T>, IEnumerable<T>, bool> cmp
+            ) {
+                if (cmp == null)
+                    throw new ArgumentNullException(nameof(cmp));
                 this._cmp = cmp;
             }
 
-            public bool Equals(IEnumerable<T> x, IEnumerable<T> y) {
+            public bool Equals([CanBeNull]IEnumerable<T> x, [CanBeNull]IEnumerable<T> y) {
                 if ((object)x == null && (object)y == null)
                     return true;
                 if ((object)x == null || (object)y == null)
@@ -109,7 +117,7 @@ namespace Jail.Common {
                 return this._cmp(x, y);
             }
 
-            public int GetHashCode(IEnumerable<T> collection) {
+            public int GetHashCode([CanBeNull]IEnumerable<T> collection) {
                 if (collection == null)
                     return 0;
                 Dictionary<T, int> subHashs = new Dictionary<T, int>();

@@ -214,7 +214,7 @@ namespace Jail.Tests.UnitTestingTests {
 
         #endregion TestForNullArgumentsCheck
 
-        #region TestForNullArgumentsCheck
+        #region
 
         [Test]
         public void TestForNullArgumentsCheck_AllTypes_HelpersForTests() {
@@ -225,8 +225,9 @@ namespace Jail.Tests.UnitTestingTests {
             helper.TestForNullArgumentsCheck(
                 t => new[] { f.Create(t, fCtx), },
                 p => f.Create(p.ParameterType, fCtx),
-                cs => new[] { cs.Select(c => typeof(UnitTestsHelper)).ToArray() },
-                cs => new[] { cs.Select(c => typeof(int)).ToArray() }
+                forType => new[] { forType.Select(c => typeof(UnitTestsHelper)).ToArray() },
+                forMethod => new[] { forMethod.Select(c => typeof(object)).ToArray() },
+                testNonPublicTypesAlso: true
             );
         }
 
@@ -239,8 +240,9 @@ namespace Jail.Tests.UnitTestingTests {
             helper.TestForNullArgumentsCheck(
                 t => new[] { f.Create(t, fCtx), },
                 p => f.Create(p.ParameterType, fCtx),
-                cs => new[] { cs.Select(c => typeof(object)).ToArray() },
-                cs => new[] { cs.Select(c => typeof(object)).ToArray() }
+                forType => new[] { forType.Select(c => typeof(object)).ToArray() },
+                forMethod => new[] { forMethod.Select(c => typeof(object)).ToArray() },
+                testNonPublicTypesAlso: true
             );
         }
         
@@ -256,7 +258,7 @@ namespace Jail.Tests.UnitTestingTests {
             );
         }
 
-        #endregion TestForNullArgumentsCheck
+        #endregion
 
         private void _verifyTypesFinder(
             string typeName,
