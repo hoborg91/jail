@@ -245,6 +245,21 @@ namespace Jail.Tests.UnitTestingTests {
                 testNonPublicTypesAlso: true
             );
         }
+
+        [Test]
+        public void TestForNullArgumentsCheck_AllTypes_Design() {
+            var helper = new UnitTestsHelper<Design.Annotations.CanBeNullAttribute>();
+            var f = new Fixture();
+            f.Customize(new AutoMoqCustomization());
+            var fCtx = new SpecimenContext(f);
+            helper.TestForNullArgumentsCheck(
+                t => new[] { f.Create(t, fCtx), },
+                p => f.Create(p.ParameterType, fCtx),
+                forType => new[] { forType.Select(c => typeof(object)).ToArray() },
+                forMethod => new[] { forMethod.Select(c => typeof(object)).ToArray() },
+                testNonPublicTypesAlso: false
+            );
+        }
         
         [Test]
         public void TestForNullArgumentsCheck_WithTypeArgument() {

@@ -19,7 +19,9 @@ namespace Jail.Design.Railway.Static {
         /// <see cref="ResultOrError.ToResultOrError{TResult}(TResult)"/> 
         /// method is not available.
         /// </summary>
-        public static IResultOrError<TResult> Success<TResult>(TResult result) {
+        public static IResultOrError<TResult> Success<TResult>(
+            [CanBeNull]TResult result
+        ) {
             return new Roe<TResult>(result);
         }
 
@@ -28,7 +30,12 @@ namespace Jail.Design.Railway.Static {
         /// contains many lines and the <see cref="ResultOrError.ToResultOrError{TResult}(TResult)"/> 
         /// method is not available.
         /// </summary>
-        public static IResultOrError<TResult> Begin<TResult>(Func<IResultOrError<TResult>> code) {
+        public static IResultOrError<TResult> Begin<TResult>(
+            Func<IResultOrError<TResult>> code
+        ) {
+            if (code == null)
+                throw new ArgumentNullException(nameof(code));
+            
             return code();
         }
 
@@ -39,7 +46,9 @@ namespace Jail.Design.Railway.Static {
         /// </summary>
         public static ILoggingResultOrError<TResult, TLogEntry> Begin<TResult, TLogEntry>(
             Func<ILoggingResultOrError<TResult, TLogEntry>> code
-        ) {
+        ) {if (code == null)
+                throw new ArgumentNullException(nameof(code));
+            
             return code();
         }
 
@@ -56,6 +65,7 @@ namespace Jail.Design.Railway.Static {
                 throw new ArgumentNullException(nameof(collection));
             if (action == null)
                 throw new ArgumentNullException(nameof(action));
+            
             var result = new List<TResult>();
             foreach (var item in collection) {
                 var r = action(item);
@@ -85,8 +95,11 @@ namespace Jail.Design.Railway.Static {
         /// </summary>
         public static IResultOrError<TResult> Fail<TResult>(
             string errorMessage,
-            [CanBeNull]Exception catchedException = null
+            Exception catchedException = null
         ) {
+            if (errorMessage == null)
+                throw new ArgumentNullException(nameof(errorMessage));
+            
             return new Roe<TResult>(
                 errorMessage,
                 catchedException
@@ -100,8 +113,13 @@ namespace Jail.Design.Railway.Static {
         public static ILoggingResultOrError<TResult, TLogEntry> Fail<TResult, TLogEntry>(
             IReadOnlyList<TLogEntry> log,
             string errorMessage,
-            [CanBeNull]Exception catchedException = null
+            Exception catchedException = null
         ) {
+            if (log == null)
+                throw new ArgumentNullException(nameof(log));
+            if (errorMessage == null)
+                throw new ArgumentNullException(nameof(errorMessage));
+            
             return new LoggingRoe<TResult, TLogEntry>(
                 log,
                 errorMessage,
@@ -112,7 +130,9 @@ namespace Jail.Design.Railway.Static {
         /// <summary>
         /// Converts the given value to <see cref="IResultOrError{T}" />.
         /// </summary>
-        public static IResultOrError<TResult> ToResultOrError<TResult>(this TResult result) {
+        public static IResultOrError<TResult> ToResultOrError<TResult>(
+            [CanBeNull]this TResult result
+        ) {
             return Success(result);
         }
 
@@ -120,7 +140,7 @@ namespace Jail.Design.Railway.Static {
         /// Converts the given value to <see cref="ILoggingResultOrError{TResult, TLogEntry}" />.
         /// </summary>
         public static ILoggingResultOrError<TResult, TLogEntry> ToResultOrError<TResult, TLogEntry>(
-            this TResult result
+            [CanBeNull]this TResult result
         ) {
             return Success(
                 result,
@@ -132,9 +152,12 @@ namespace Jail.Design.Railway.Static {
         /// Converts the given value to <see cref="ILoggingResultOrError{TResult, TLogEntry}" />.
         /// </summary>
         public static ILoggingResultOrError<TResult, TLogEntry> Success<TResult, TLogEntry>(
-            TResult result,
+            [CanBeNull]TResult result,
             IReadOnlyList<TLogEntry> log
         ) {
+            if (log == null)
+                throw new ArgumentNullException(nameof(log));
+            
             return new LoggingRoe<TResult, TLogEntry>(result, log);
         }
 
@@ -147,6 +170,9 @@ namespace Jail.Design.Railway.Static {
         public static IResultOrError<T> BeginAndCompose<T>(
             Expression<Func<T>> constructingExpression
         ) {
+            if (constructingExpression == null)
+                throw new ArgumentNullException(nameof(constructingExpression));
+            
             var newExpression = Check(constructingExpression, nameof(constructingExpression));
             return ResultOrError.ConstructRoe<T>(newExpression, null, null);
         }
@@ -161,6 +187,9 @@ namespace Jail.Design.Railway.Static {
         ) {
             if (resultOrError == null)
                 throw new ArgumentNullException(nameof(resultOrError));
+            if (constructingExpression == null)
+                throw new ArgumentNullException(nameof(constructingExpression));
+            
             var newExpression = Check(constructingExpression, nameof(constructingExpression));
             if (resultOrError.IsFailed)
                 return ResultOrError.Fail<T>(

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Jail.Design.Annotations;
 
 namespace Jail.Design.Railway {
     /// <summary>Contains extension methods for 
@@ -15,7 +16,7 @@ namespace Jail.Design.Railway {
         /// </summary>
         public static T ResultOrValue<T>(
             this IResultOrError<T> resultOrError,
-            T valueIfFailed
+            [CanBeNull]T valueIfFailed
         ) {
             if (resultOrError == null)
                 throw new ArgumentNullException(nameof(resultOrError));
