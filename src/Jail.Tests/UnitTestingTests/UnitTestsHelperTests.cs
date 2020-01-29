@@ -257,7 +257,10 @@ namespace Jail.Tests.UnitTestingTests {
                 p => f.Create(p.ParameterType, fCtx),
                 forType => new[] { forType.Select(c => typeof(object)).ToArray() },
                 forMethod => new[] { forMethod.Select(c => typeof(object)).ToArray() },
-                testNonPublicTypesAlso: false
+                testNonPublicTypesAlso: false,
+                doNotTestTheseTypes: new[] { 
+                    typeof(Design.FileSystem.FileSystemApi).Name, 
+                }
             );
         }
         

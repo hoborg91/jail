@@ -133,17 +133,21 @@ namespace Jail.HelpersForTests {
             Func<ParameterInfo, object> parametersFactory,
             Func<ITypeArgumentContextForType[], IReadOnlyCollection<Type[]>> typeArgumentsFactoryForType = null,
             Func<ITypeArgumentContextForMethod[], IReadOnlyCollection<Type[]>> typeArgumentsFactoryForMethod = null,
-            bool testNonPublicTypesAlso = false
+            bool testNonPublicTypesAlso = false,
+            IReadOnlyCollection<string> doNotTestTheseTypes = null
         ) {
             if (instancesFactory == null)
                 throw new ArgumentNullException(nameof(instancesFactory));
             if (parametersFactory == null)
                 throw new ArgumentNullException(nameof(parametersFactory));
             
+            if (doNotTestTheseTypes == null)
+                doNotTestTheseTypes = new string[0];
             var fails = new HashSet<MissingExceptionException>();
             var types = this._typesFinder.GetAllTypes()
                 .Where(t => !t.IsInterface &&
-                    (testNonPublicTypesAlso || t.IsPublic)
+                    (testNonPublicTypesAlso || t.IsPublic) &&
+                    !doNotTestTheseTypes.Contains(t.Name)
                 )
                 .SelectMany(t => this._makeTypes(t, typeArgumentsFactoryForType))
                 .ToList();
