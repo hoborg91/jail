@@ -235,5 +235,37 @@ namespace CilTests.CommonClassesTests {
         }
 
         #endregion ExtendTo
+
+        #region ToString
+
+        [Test]
+        public void Test_ToString() {
+            // Arrange
+            var sut = new MovingWindow<int>(2, new[] { 1, 2, 3, });
+            var expected = "1 2";
+
+            // Act
+            sut.IsExhausted();
+            var result = sut.ToString();
+
+            // Assert
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void Test_ToString_IncompleteAccumulator() {
+            // Arrange
+            var sut = new MovingWindow<int>(2, new[] { 1, });
+            var expected = "1 *";
+
+            // Act
+            sut.IsExhausted();
+            var result = sut.ToString();
+
+            // Assert
+            Assert.AreEqual(expected, result);
+        }
+
+        #endregion ToString
     }
 }
