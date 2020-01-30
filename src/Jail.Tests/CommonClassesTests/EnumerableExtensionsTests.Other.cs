@@ -10,7 +10,7 @@ namespace CilTests.CommonClassesTests {
         #region IsEmpty
 
         [Test]
-        public void Test_IsEmpty_ForIEnumerable_True() {
+        public void IsEmpty_ForIEnumerable_True() {
             // Arrange
             var emptyCollection = new int[0];
 
@@ -22,7 +22,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_IsEmpty_ForIEnumerable_False() {
+        public void IsEmpty_ForIEnumerable_False() {
             // Arrange
             var nonEmptyCollection = new[] { 0, };
 
@@ -34,24 +34,24 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_IsEmpty_ForICollection_True() {
+        public void IsEmpty_ForICollection_True() {
             // Arrange
             var emptyCollection = new int[0];
 
             // Act
-            var result = EnumerableExtensions.IsEmpty((ICollection<int>)emptyCollection);
+            var result = EnumerableExtensions.IsEmpty((IReadOnlyCollection<int>)emptyCollection);
 
             // Assert
             Assert.IsTrue(result);
         }
 
         [Test]
-        public void Test_IsEmpty_ForICollection_False() {
+        public void IsEmpty_ForICollection_False() {
             // Arrange
             var nonEmptyCollection = new[] { 0, };
 
             // Act
-            var result = EnumerableExtensions.IsEmpty((ICollection<int>)nonEmptyCollection);
+            var result = EnumerableExtensions.IsEmpty((IReadOnlyCollection<int>)nonEmptyCollection);
 
             // Assert
             Assert.IsFalse(result);
@@ -62,7 +62,7 @@ namespace CilTests.CommonClassesTests {
         #region EqualsAsMultiset
 
         [Test]
-        public void Test_EqualsAsMultiset() {
+        public void EqualsAsMultiset() {
             // Arrange
             var set1 = new[] { 0, 1, 2, };
             var set2 = new[] { 2, 1, 0, };
@@ -78,7 +78,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_EqualsAsMultiset_DifferentElementsCounts() {
+        public void EqualsAsMultiset_DifferentElementsCounts() {
             // Arrange
             var set1 = new[] { 0, 1, 2, 2 };
             var set2 = new[] { 2, 1, 0, 0, };
@@ -94,7 +94,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_EqualsAsMultiset_CustomComparer() {
+        public void EqualsAsMultiset_CustomComparer() {
             // Arrange
             var set1 = new[] { 0, 1, 2, 3, };
             var set2 = new[] { 4, 5, 6, 7, };
@@ -111,7 +111,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_EqualsAsMultiset_CustomComparer_DifferentElementsCounts() {
+        public void EqualsAsMultiset_CustomComparer_DifferentElementsCounts() {
             // Arrange
             var set1 = new[] { 0, 1, 2, 3, };
             var set2 = new[] { 4, 5, 5, 5, };
@@ -132,7 +132,7 @@ namespace CilTests.CommonClassesTests {
         #region JoinBy
 
         [Test]
-        public void Test_JoinBy_Empty() {
+        public void JoinBy_Empty() {
             // Arrange, Act
             var result = EnumerableExtensions.JoinBy(Array.Empty<string>(), ",");
 
@@ -141,7 +141,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_JoinBy() {
+        public void JoinBy() {
             // Arrange
             var expectedText = ",a,text ,separated, with , the  ,  commas";
             var separator = ",";
@@ -159,7 +159,7 @@ namespace CilTests.CommonClassesTests {
         #region ContainsAny
 
         [Test]
-        public void Test_ContainsAny() {
+        public void ContainsAny() {
             // Arrange
             var collection = new[] { 0, 1, 2, };
             var items = new[] { 2, 3, };
@@ -175,7 +175,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_ContainsAny_WithNull() {
+        public void ContainsAny_WithNull() {
             // Arrange
             var collection = new int?[] { 0, 1, null };
             var items = new int?[] { null, 3, };
@@ -191,7 +191,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_ContainsAny_Negative() {
+        public void ContainsAny_Negative() {
             // Arrange
             var collection = new[] { 0, 1, 2 };
             var items = new[] { -1, 3, };
@@ -211,7 +211,7 @@ namespace CilTests.CommonClassesTests {
         #region RangeOfDoubles
 
         [Test]
-        public void Test_RangeOfDoubles() {
+        public void RangeOfDoubles() {
             // Arrange
             double 
                 lowerBound = -1, 
@@ -234,7 +234,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_RangeOfDoubles_ThrowsOnNegativeStep() {
+        public void RangeOfDoubles_ThrowsOnNegativeStep() {
             // Arrange, Act, Assert
             Assert.Throws<ArgumentOutOfRangeException>(() => EnumerableExtensions.RangeOfDoubles(
                 0, -1, 10
@@ -242,7 +242,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_RangeOfDoubles_ThrowsOnInvertedBounds() {
+        public void RangeOfDoubles_ThrowsOnInvertedBounds() {
             // Arrange, Act, Assert
             Assert.Throws<ArgumentException>(() => EnumerableExtensions.RangeOfDoubles(
                 1, 2, -1
@@ -250,7 +250,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_RangeOfDoubles_ThrowsOnNan() {
+        public void RangeOfDoubles_ThrowsOnNan() {
             // Arrange
             var nan = 0.0 / 0;
             Assert.IsTrue(double.IsNaN(nan));
@@ -270,7 +270,7 @@ namespace CilTests.CommonClassesTests {
         [Test]
         [TestCase(double.PositiveInfinity)]
         [TestCase(double.NegativeInfinity)]
-        public void Test_RangeOfDoubles_ThrowsOnInfinities(double inf) {
+        public void RangeOfDoubles_ThrowsOnInfinities(double inf) {
             // Arrange
             Assert.IsTrue(double.IsInfinity(inf));
 
@@ -291,7 +291,7 @@ namespace CilTests.CommonClassesTests {
         #region SplitIntoBatches
 
         [Test]
-        public void Test_SplitIntoBatches_ThrowsOnZeroBatchSize() {
+        public void SplitIntoBatches_ThrowsOnZeroBatchSize() {
             // Arrange, Act, Assert
             Assert.Throws<ArgumentOutOfRangeException>(() => {
                 EnumerableExtensions.SplitIntoBatches(Array.Empty<int>(), 0)
@@ -300,7 +300,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_SplitIntoBatches() {
+        public void SplitIntoBatches() {
             // Arrange
             var inputCollection = new[] { 0, 1, 2, 3, 4, };
             var expectedBatches = new[] {
@@ -318,7 +318,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_SplitIntoBatches_EmptyInput() {
+        public void SplitIntoBatches_EmptyInput() {
             // Arrange
             var inputCollection = Array.Empty<int>();
             var expectedBatches = new int[0][];
@@ -332,5 +332,48 @@ namespace CilTests.CommonClassesTests {
         }
 
         #endregion SplitIntoBatches
+
+        #region ToSmth
+
+        [Test]
+        public void ToQueue() {
+            // Arrange
+            var collection = new[] { 1, 2, 3, };
+
+            // Act
+            var result = EnumerableExtensions.ToQueue(collection);
+
+            // Assert
+            CollectionAssert.AreEqual(collection, result.ToList());
+        }
+
+        [Test]
+        public void ToCycle() {
+            // Arrange
+            var collection = new[] { 1, 2, 3, };
+
+            // Act
+            var result = EnumerableExtensions.ToCycle(collection);
+            var resultList = Enumerable.Range(0, result.Count).Select(i => {
+                return result.GetCurrentAndMoveToNext();
+            }).ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(collection, resultList);
+        }
+
+        [Test]
+        public void ToSet() {
+            // Arrange
+            var collection = new[] { 1, 2, 3, };
+
+            // Act
+            var result = EnumerableExtensions.ToSet(collection);
+
+            // Assert
+            CollectionAssert.AreEqual(collection, result.ToList());
+        }
+
+        #endregion ToSmth
     }
 }

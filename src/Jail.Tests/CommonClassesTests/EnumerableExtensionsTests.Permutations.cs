@@ -8,7 +8,7 @@ namespace CilTests.CommonClassesTests {
     [TestFixture]
     public partial class EnumerableExtensionsTests {
         [Test]
-        public void Test_Combinations_Throws_OnArgument1ContainingNulls() {
+        public void Combinations_Throws_OnArgument1ContainingNulls() {
             // Arrange
             var collection = new[] {
                 (int[])null,
@@ -26,7 +26,7 @@ namespace CilTests.CommonClassesTests {
         [Test]
         [TestCase(false)]
         [TestCase(true)]
-        public void Test_Combinations_ReturnsCollectionOfTheCorrectLength(bool streamed) {
+        public void Combinations_ReturnsCollectionOfTheCorrectLength(bool streamed) {
             // Arrange, Act
             var tc = this._prepare_CombinationsTestCase(streamed);
 
@@ -40,7 +40,7 @@ namespace CilTests.CommonClassesTests {
         [Test]
         [TestCase(false)]
         [TestCase(true)]
-        public void Test_Combinations_ReturnsCollectionContainingAllNecessaryElements(bool streamed) {
+        public void Combinations_ReturnsCollectionContainingAllNecessaryElements(bool streamed) {
             // Arrange, Act
             var tc = this._prepare_CombinationsTestCase(streamed);
 
@@ -59,7 +59,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_Combinations_ThrowsOverflowException() {
+        public void Combinations_ThrowsOverflowException() {
             // Arrange
             var collections = this._veryLargeCollections();
 
@@ -79,7 +79,7 @@ namespace CilTests.CommonClassesTests {
         /// </summary>
         [Test]
         [Ignore("AppVeyor restricts the execution time.")]
-        public void Test_CombinationsStreamed_DoesNotThrowOverflowException() {
+        public void CombinationsStreamed_DoesNotThrowOverflowException() {
             // Arrange
             var collections = this._veryLargeCollections();
 
@@ -93,7 +93,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_Permutations_Count() {
+        public void Permutations_Count() {
             // Arrange, act
             var testCase = this._prepare_PermutationsTestCase();
 
@@ -102,7 +102,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_Permutations_ContainSameElements() {
+        public void Permutations_ContainSameElements() {
             // Arrange, act
             var testCase = this._prepare_PermutationsTestCase();
 
@@ -111,7 +111,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_Permutations_DoNotDuplicate() {
+        public void Permutations_DoNotDuplicate() {
             // Arrange, act
             var testCase = this._prepare_PermutationsTestCase();
 
