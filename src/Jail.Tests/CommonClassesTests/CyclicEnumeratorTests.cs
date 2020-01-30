@@ -1,6 +1,7 @@
 ﻿using Jail.Common;
 using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -54,18 +55,19 @@ namespace Jail.Tests.CommonClassesTests {
             // Arrange
             var arr = new[] { 0, 1, 2, };
             var cycle = new CyclicEnumerator<int>(arr);
+            var cycleAsEnumerator = (IEnumerator)cycle;
 
             // Act
             cycle.MoveNext();
-            var result1 = cycle.Current;
+            var result1 = (int)cycleAsEnumerator.Current;
             cycle.Reset();
             cycle.MoveNext();
-            var result2 = cycle.Current;
+            var result2 = (int)cycleAsEnumerator.Current;
             foreach (var i in Enumerable.Range(0, 10))
                 cycle.MoveNext();
             cycle.Reset();
             cycle.MoveNext();
-            var result3 = cycle.Current;
+            var result3 = (int)cycleAsEnumerator.Current;
 
             // Assert
             Assert.AreEqual(arr[0], result1);
@@ -101,6 +103,22 @@ namespace Jail.Tests.CommonClassesTests {
             // Act, Assert
             Assert.Throws<ObjectDisposedException>(() => cycle.Reset());
         }
+
+        #region ToString
+
+        [Test]
+        public void Test_ToString() {
+            // Arrange
+            var sut = new CyclicEnumerator<int>(new[] { 1, });
+
+            // Act
+            var result = sut.ToString();
+
+            // Assert
+            Assert.NotNull(result);
+        }
+
+        #endregion ToString
 
         private CyclicEnumerator<int> _prepareDispose() {
             // Arrange

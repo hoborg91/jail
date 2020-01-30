@@ -8,7 +8,7 @@ namespace Jail.Tests.CommonClassesTests {
     [TestFixture]
     public class LimitedQueueTests {
         [Test]
-        public void Test_LimitedQueue_Ctor_WrongArgument() {
+        public void LimitedQueue_Ctor_WrongArgument() {
             // Arrange, Act, Assert
             Assert.Throws<ArgumentException>(() => {
                 var lq = new LimitedQueue<int>(-1);
@@ -16,7 +16,7 @@ namespace Jail.Tests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_LimitedQueue_Enqueue() {
+        public void LimitedQueue_Enqueue() {
             // Arrange
             var lq = new LimitedQueue<int>(2);
 
@@ -44,7 +44,7 @@ namespace Jail.Tests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_LimitedQueue_Dequeue() {
+        public void LimitedQueue_Dequeue() {
             // Arrange
             var lq = new LimitedQueue<int>(2);
 
@@ -65,7 +65,7 @@ namespace Jail.Tests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_LimitedQueue_AsIEnumerable() {
+        public void LimitedQueue_AsIEnumerable() {
             // Arrange
             var capacity = 2;
             var lq = new LimitedQueue<int>(capacity);
@@ -84,5 +84,23 @@ namespace Jail.Tests.CommonClassesTests {
             // Assert
             CollectionAssert.AreEqual(toAdd, fromLimQueue);
         }
+
+        #region ToString
+
+        [Test]
+        public void Test_ToString() {
+            // Arrange
+            var sut = new LimitedQueue<int>(2);
+            sut.Enqueue(1);
+            sut.Enqueue(2);
+
+            // Act
+            var result = sut.ToString();
+
+            // Assert
+            Assert.NotNull(result);
+        }
+
+        #endregion ToString
     }
 }
