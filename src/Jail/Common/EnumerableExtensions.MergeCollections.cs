@@ -51,6 +51,7 @@ namespace Jail.Common {
                 throw new ArgumentNullException(nameof(collections));
             if (collections.Any(x => x == null))
                 throw new ArgumentException($"All elements in the '{nameof(collections)}' collection must be not null.");
+            
             var result = new List<T>();
             foreach (var other in collections) {
                 for (int i = 0; i < other.Count; i++) {

@@ -8,7 +8,7 @@ namespace CilTests.CommonClassesTests {
     [TestFixture]
     public partial class EnumerableExtensionsTests {
         [Test]
-        public void Test_MergeCollections_WrongArgument_ContainsNull() {
+        public void MergeCollections_WrongArgument_ContainsNull() {
             // Arrange, Act, Assert
             Assert.Throws<ArgumentException>(() => {
                 EnumerableExtensions.Merge(
@@ -18,7 +18,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_MergeCollections_WithEmpty() {
+        public void MergeCollections_WithEmpty() {
             // Arrange
             var nonEmptyCollection = new List<int> {
                 1, 2, 3,
@@ -36,7 +36,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_MergeCollections_OnConflictLast() {
+        public void MergeCollections_OnConflictLast() {
             // Arrange
             var collections = new[] {
                 new List<int> { 10, 11, },
@@ -52,7 +52,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_MergeCollections_OnConflictFirst() {
+        public void MergeCollections_OnConflictFirst() {
             // Arrange
             var collections = new[] {
                 new List<int> { 10, 11, },
@@ -68,7 +68,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_MergeCollections_Same() {
+        public void MergeCollections_Same() {
             // Arrange
             var collections = new[] {
                 new List<int> { 10, 11, },
@@ -84,7 +84,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_MergeCollections_WithNulls() {
+        public void MergeCollections_WithNulls() {
             // Arrange
             var collections = new[] {
                 new List<int?> { null, 11, },
@@ -100,7 +100,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_MergeCollections_OnConflictThrow() {
+        public void MergeCollections_OnConflictThrow() {
             // Arrange
             var collections = new[] {
                 new List<int?> { null, 11, },
@@ -114,7 +114,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_MergeCollections_OnConflictThrowIfNotNull() {
+        public void MergeCollections_OnConflictThrowIfNotNull() {
             // Arrange
             var collections = new[] {
                 new List<int?> { 10, 11, },
@@ -125,6 +125,38 @@ namespace CilTests.CommonClassesTests {
             Assert.Throws<MergeException>(() => {
                 collections.Merge(EnumerableExtensions.MergeListsBehaviour.ThrowIfNotNull).ToList();
             });
+        }
+
+        [Test]
+        public void MergeCollections_ThrowIfNotNull_NoConflict_1() {
+            // Arrange
+            var collections = new[] {
+                new List<int?> { 10, 11, },
+                new List<int?> { null, },
+            };
+            var expected = new[] { 10, 11, };
+
+            // Act
+            var resut = collections.Merge(EnumerableExtensions.MergeListsBehaviour.ThrowIfNotNull).ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, resut);
+        }
+
+        [Test]
+        public void MergeCollections_ThrowIfNotNull_NoConflict_2() {
+            // Arrange
+            var collections = new[] {
+                new List<int?> { null, 11, },
+                new List<int?> { 20, },
+            };
+            var expected = new[] { 20, 11, };
+
+            // Act
+            var resut = collections.Merge(EnumerableExtensions.MergeListsBehaviour.ThrowIfNotNull).ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, resut);
         }
     }
 }
