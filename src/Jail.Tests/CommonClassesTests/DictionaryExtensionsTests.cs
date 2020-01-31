@@ -45,7 +45,31 @@ namespace Jail.Tests.CommonClassesTests {
             var dict = new Dictionary<int, int>();
 
             // Act
-            var value = DictionaryExtensions.GetValueOrDefault(dict, key, expectedValue);
+            var value = DictionaryExtensions.GetValueOrDefault(
+                dict, 
+                key, 
+                expectedValue
+            );
+
+            // Assert
+            Assert.AreEqual(expectedValue, value);
+        }
+
+        [Test]
+        public void Test_GetValueOrDefault_FromDictionary() {
+            // Arrange
+            var key = 0;
+            var expectedValue = 1;
+            var dict = new Dictionary<int, int> {
+                [key] = expectedValue,
+            };
+
+            // Act
+            var value = DictionaryExtensions.GetValueOrDefault(
+                dict, 
+                key, 
+                expectedValue + 1
+            );
 
             // Assert
             Assert.AreEqual(expectedValue, value);

@@ -7,7 +7,7 @@ namespace CilTests.CommonClassesTests {
     [TestFixture]
     public partial class DictionaryExtensionsTests {
         [Test]
-        public void Test_MergeDictionaries_WrongArgument_ContainsNull() {
+        public void MergeDictionaries_WrongArgument_ContainsNull() {
             // Arrange, Act, Assert
             Assert.Throws<ArgumentException>(() => {
                 DictionaryExtensions.Merge(
@@ -17,7 +17,34 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_MergeDictionaries() {
+        public void MergeDictionaries_2() {
+            // Arrange
+            var dicts = new[] {
+                new Dictionary<int, int> {
+                    [0] = 10,
+                    [1] = 11,
+                },
+                new Dictionary<int, int> {
+                    [2] = 22,
+                    [3] = 23,
+                },
+            };
+            var expected = new Dictionary<int, int> {
+                [0] = 10,
+                [1] = 11,
+                [2] = 22,
+                [3] = 23,
+            };
+
+            // Act
+            var merged = DictionaryExtensions.Merge(dicts[0], dicts[1]);
+
+            // Assert
+            CollectionAssert.AreEquivalent(expected, merged);
+        }
+
+        [Test]
+        public void MergeDictionaries_3() {
             // Arrange
             var dicts = new[] {
                 new Dictionary<int, int> {
@@ -41,14 +68,14 @@ namespace CilTests.CommonClassesTests {
             };
 
             // Act
-            var merged = dicts.Merge();
+            var merged = DictionaryExtensions.Merge(dicts);
 
             // Assert
             CollectionAssert.AreEquivalent(expected, merged);
         }
 
         [Test]
-        public void Test_MergeDictionaries_OnConflictFirst() {
+        public void MergeDictionaries_OnConflictFirst() {
             // Arrange
             var dicts = new[] {
                 new Dictionary<int, int> {
@@ -77,7 +104,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_MergeDictionaries_OnConflictLast() {
+        public void MergeDictionaries_OnConflictLast() {
             // Arrange
             var dicts = new[] {
                 new Dictionary<int, int> {
@@ -106,7 +133,7 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_MergeDictionaries_OnConflictThrowIfDifferent() {
+        public void MergeDictionaries_OnConflictThrowIfDifferent_Common() {
             // Arrange
             var dicts = new[] {
                 new Dictionary<int, int> {
@@ -126,7 +153,27 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_MergeDictionaries_OnConflictThrowIfDifferent_DoesNotThrow() {
+        public void MergeDictionaries_OnConflictThrowIfDifferent_WithNull() {
+            // Arrange
+            var dicts = new[] {
+                new Dictionary<int, int?> {
+                    [0] = 10,
+                    [1] = null,
+                },
+                new Dictionary<int, int?> {
+                    [1] = 21,
+                    [2] = 22,
+                },
+            };
+
+            // Act, Assert
+            Assert.Throws<MergeException>(() => {
+                dicts.Merge(DictionaryExtensions.MergeDictionariesBehaviour.ThrowIfDifferent);
+            });
+        }
+
+        [Test]
+        public void MergeDictionaries_OnConflictThrowIfDifferent_DoesNotThrow_Common() {
             // Arrange
             var dicts = new[] {
                 new Dictionary<int, int> {
@@ -152,7 +199,33 @@ namespace CilTests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_MergeDictionaries_OnConflictThrowAlways() {
+        public void MergeDictionaries_OnConflictThrowIfDifferent_DoesNotThrow_BothNulls() {
+            // Arrange
+            var dicts = new[] {
+                new Dictionary<int, int?> {
+                    [0] = 10,
+                    [1] = null,
+                },
+                new Dictionary<int, int?> {
+                    [1] = null,
+                    [2] = 22,
+                },
+            };
+            var expected = new Dictionary<int, int?> {
+                [0] = 10,
+                [1] = null,
+                [2] = 22,
+            };
+
+            // Act
+            var merged = dicts.Merge(DictionaryExtensions.MergeDictionariesBehaviour.ThrowIfDifferent);
+
+            // Assert
+            CollectionAssert.AreEquivalent(expected, merged);
+        }
+
+        [Test]
+        public void MergeDictionaries_OnConflictThrowAlways() {
             // Arrange
             var dicts = new[] {
                 new Dictionary<int, int> {
@@ -166,7 +239,9 @@ namespace CilTests.CommonClassesTests {
             };
 
             // Act, Assert
-            var merged = dicts.Merge(DictionaryExtensions.MergeDictionariesBehaviour.ThrowIfDifferent);
+            Assert.Throws<MergeException>(() => 
+                dicts.Merge(DictionaryExtensions.MergeDictionariesBehaviour.ThrowAlways)
+            );
         }
     }
 }
