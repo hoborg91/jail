@@ -30,6 +30,23 @@ namespace Jail.Common {
             /// Throw MergeDictionariesException, if the values of equal keys are different.
             /// </summary>
             ThrowIfDifferent,
+
+            /// <summary>
+            /// If all dictionaries contains nulls then use null. 
+            /// If the only one dictionary contains not null then use this value.
+            /// Otherwise (if more than one dictionary contains not null), 
+            /// throw MergeDictionariesException.
+            /// </summary>
+            NotNullThrowAlways,
+
+            /// <summary>
+            /// If all dictionaries contains nulls then use null. 
+            /// If the only one dictionary contains not null then use this value.
+            /// If all not null values are equal then use this value.
+            /// Otherwise (if more than one dictionary contains not null and 
+            /// these values are not equal), throw MergeDictionariesException.
+            /// </summary>
+            NotNullThrowIfDifferent,
         }
 
         /// <summary>
@@ -88,8 +105,26 @@ namespace Jail.Common {
                                         "One dictionary contains \"" + (result[key] == null ? "null" : result[key].ToString()) + "\" at key \"" + key.ToString() + "\", "
                                         + "and other one contains \"" + (val == null ? "null" : val.ToString()) + "\".");
                                 break;
+                            case MergeDictionariesBehaviour.NotNullThrowAlways:
+                                if (val == null) {
+
+                                } else if (result[key] != null)
+                                    throw new MergeException("More than one dictionary contain not null " +
+                                        $"values with key \"{key}\".");
+                                else 
+                                    result[key] = val;
+                                break;
+                            case MergeDictionariesBehaviour.NotNullThrowIfDifferent:
+                                if (val == null) {
+
+                                } else if (result[key] == null) {
+                                    result[key] = val;
+                                } else if (!result[key].Equals(val))
+                                    throw new MergeException("More than one dictionary contain not null " +
+                                        $"values with key \"{key}\", and these values are not equal.");
+                                break;
                             default:
-                                throw new NotImplementedException($"The given {nameof(MergeDictionariesBehaviour)} value is not supported yet.");
+                                throw new NotImplementedException($"The given {nameof(MergeDictionariesBehaviour)} value \"{onConflict}\" is not supported yet.");
                         }
                     } else {
                         result[key] = val;

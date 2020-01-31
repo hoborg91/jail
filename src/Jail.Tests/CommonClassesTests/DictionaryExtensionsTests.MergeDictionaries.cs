@@ -243,5 +243,185 @@ namespace CilTests.CommonClassesTests {
                 dicts.Merge(DictionaryExtensions.MergeDictionariesBehaviour.ThrowAlways)
             );
         }
+
+        [Test]
+        public void MergeDictionaries_OnConflictNotNullThrowAlways_AllNulls() {
+            // Arrange
+            var dicts = new[] {
+                new Dictionary<int, int?> {
+                    [0] = 10,
+                    [1] = null,
+                },
+                new Dictionary<int, int?> {
+                    [1] = null,
+                    [2] = 22,
+                },
+                new Dictionary<int, int?> {
+                    [1] = null,
+                },
+            };
+            var expected = new Dictionary<int, int?> {
+                [0] = 10,
+                [1] = null,
+                [2] = 22,
+            };
+
+            // Act
+            var merged = DictionaryExtensions.Merge(
+                dicts,
+                DictionaryExtensions.MergeDictionariesBehaviour.NotNullThrowAlways
+            );
+
+            // Assert
+            CollectionAssert.AreEquivalent(expected, merged);
+        }
+
+        [Test]
+        public void MergeDictionaries_OnConflictNotNullThrowAlways_OneNotNull() {
+            // Arrange
+            var dicts = new[] {
+                new Dictionary<int, int?> {
+                    [0] = 10,
+                    [1] = null,
+                },
+                new Dictionary<int, int?> {
+                    [1] = 21,
+                    [2] = 22,
+                },
+                new Dictionary<int, int?> {
+                    [1] = null,
+                },
+            };
+            var expected = new Dictionary<int, int?> {
+                [0] = 10,
+                [1] = 21,
+                [2] = 22,
+            };
+
+            // Act
+            var merged = DictionaryExtensions.Merge(
+                dicts,
+                DictionaryExtensions.MergeDictionariesBehaviour.NotNullThrowAlways
+            );
+
+            // Assert
+            CollectionAssert.AreEquivalent(expected, merged);
+        }
+
+        [Test]
+        public void MergeDictionaries_OnConflictNotNullThrowAlways_MoreThanOneNotNulls() {
+            // Arrange
+            var dicts = new[] {
+                new Dictionary<int, int?> {
+                    [0] = 10,
+                    [1] = null,
+                },
+                new Dictionary<int, int?> {
+                    [1] = 21,
+                    [2] = 22,
+                },
+                new Dictionary<int, int?> {
+                    [1] = 31,
+                },
+            };
+
+            // Act, Assert
+            Assert.Throws<MergeException>(() =>
+                DictionaryExtensions.Merge(
+                    dicts,
+                    DictionaryExtensions.MergeDictionariesBehaviour.NotNullThrowAlways
+                )
+            );
+        }
+
+        [Test]
+        public void MergeDictionaries_OnConflictNotNullThrowIfDifferent_AllNulls() {
+            // Arrange
+            var dicts = new[] {
+                new Dictionary<int, int?> {
+                    [0] = 10,
+                    [1] = null,
+                },
+                new Dictionary<int, int?> {
+                    [1] = null,
+                    [2] = 22,
+                },
+                new Dictionary<int, int?> {
+                    [1] = null,
+                },
+            };
+            var expected = new Dictionary<int, int?> {
+                [0] = 10,
+                [1] = null,
+                [2] = 22,
+            };
+
+            // Act
+            var merged = DictionaryExtensions.Merge(
+                dicts,
+                DictionaryExtensions.MergeDictionariesBehaviour.NotNullThrowIfDifferent
+            );
+
+            // Assert
+            CollectionAssert.AreEquivalent(expected, merged);
+        }
+
+        [Test]
+        public void MergeDictionaries_OnConflictNotNullThrowIfDifferent_OneNotNull() {
+            // Arrange
+            var dicts = new[] {
+                new Dictionary<int, int?> {
+                    [0] = 10,
+                    [1] = 21,
+                },
+                new Dictionary<int, int?> {
+                    [1] = 21,
+                    [2] = 22,
+                },
+                new Dictionary<int, int?> {
+                    [1] = null,
+                },
+            };
+            var expected = new Dictionary<int, int?> {
+                [0] = 10,
+                [1] = 21,
+                [2] = 22,
+            };
+
+            // Act
+            var merged = DictionaryExtensions.Merge(
+                dicts,
+                DictionaryExtensions.MergeDictionariesBehaviour.NotNullThrowIfDifferent
+            );
+
+            // Assert
+            CollectionAssert.AreEquivalent(expected, merged);
+        }
+
+        [Test]
+        public void MergeDictionaries_OnConflictNotNullThrowIfDifferent_MoreThanOneNotNulls() {
+            // Arrange
+            var dicts = new[] {
+                new Dictionary<int, int?> {
+                    [0] = 10,
+                    [1] = null,
+                },
+                new Dictionary<int, int?> {
+                    [1] = 21,
+                    [2] = 22,
+                },
+                new Dictionary<int, int?> {
+                    [1] = 31,
+                },
+            };
+
+            // Act, Assert
+            Assert.Throws<MergeException>(() =>
+                DictionaryExtensions.Merge(
+                    dicts,
+                    DictionaryExtensions.MergeDictionariesBehaviour.NotNullThrowIfDifferent
+                )
+            );
+        }
     }
 }
