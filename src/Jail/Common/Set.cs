@@ -151,7 +151,7 @@ namespace Jail.Common {
 
         /// <inheritdoc cref="ICollection{T}.Add(T)" />
         void ICollection<T>.Add([CanBeNull]T item) {
-            _set.Add(item);
+            this.Add(item);
         }
 
         /// <inheritdoc cref="ICollection{T}.Clear" />
