@@ -8,7 +8,7 @@ namespace Jail.Tests.CommonClassesTests {
     public partial class DictionaryExtensionsTests {
 
         [Test]
-        public void Test_GetValueOrDefault_KeyExists() {
+        public void GetValueOrDefault_KeyExists() {
             // Arrange
             var key = 0;
             var expectedValue = 0;
@@ -24,7 +24,7 @@ namespace Jail.Tests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_GetValueOrDefault_ImplicitDefault() {
+        public void GetValueOrDefault_ImplicitDefault() {
             // Arrange
             var key = 0;
             var expectedValue = default(int);
@@ -38,7 +38,7 @@ namespace Jail.Tests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_GetValueOrDefault_ExplicitDefault() {
+        public void GetValueOrDefault_ExplicitDefault() {
             // Arrange
             var key = 0;
             var expectedValue = 1;
@@ -56,7 +56,7 @@ namespace Jail.Tests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_GetValueOrDefault_FromDictionary() {
+        public void GetValueOrDefault_FromDictionary() {
             // Arrange
             var key = 0;
             var expectedValue = 1;
@@ -120,7 +120,7 @@ namespace Jail.Tests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_AddOrModify_Add() {
+        public void AddOrModify_Add() {
             // Arrange
             var dict = new Dictionary<string, int>();
             var key = string.Empty;
@@ -141,7 +141,7 @@ namespace Jail.Tests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_AddOrModify_Modify() {
+        public void AddOrModify_Modify() {
             // Arrange
             var dict = new Dictionary<string, int>();
             var key = string.Empty;

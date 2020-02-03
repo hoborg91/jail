@@ -8,7 +8,7 @@ namespace Jail.Tests.UnitTestingTests {
     [TestFixture]
     public class TypesFinderTests {
         [Test]
-        public void Test_FindType_ThrowsOnWrongArgument() {
+        public void FindType_ThrowsOnWrongArgument() {
             // Arrange
             var assembly = Assembly.GetExecutingAssembly();
             var sut = new AssemblyTypesFinder(assembly);
@@ -20,7 +20,7 @@ namespace Jail.Tests.UnitTestingTests {
         }
 
         [Test]
-        public void Test_FindType() {
+        public void FindType() {
             // Arrange
             var expectedType = typeof(TypesFinderTests);
             var typeName = expectedType.Name;
@@ -35,7 +35,7 @@ namespace Jail.Tests.UnitTestingTests {
         }
 
         [Test]
-        public void Test_FindType_Success_AmbiguousType() {
+        public void FindType_Success_AmbiguousType() {
             // Arrange
             var expectedType = typeof(AmbiguousType);
             var typeName = expectedType.Name;
@@ -51,7 +51,7 @@ namespace Jail.Tests.UnitTestingTests {
         }
 
         [Test]
-        public void Test_FindType_Fails_NoSuchType() {
+        public void FindType_Fails_NoSuchType() {
             // Arrange
             var assembly = Assembly.GetExecutingAssembly();
             var sut = new AssemblyTypesFinder(assembly);
@@ -63,7 +63,7 @@ namespace Jail.Tests.UnitTestingTests {
         }
 
         [Test]
-        public void Test_FindType_Fails_AmbiguousType() {
+        public void FindType_Fails_AmbiguousType() {
             // Arrange
             var expectedType = typeof(AmbiguousType);
             var typeName = expectedType.Name;

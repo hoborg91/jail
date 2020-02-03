@@ -12,7 +12,7 @@ namespace Jail.Tests.DesignClassesTests.RailwayClassesTests {
         }
 
         [Test]
-        public void Test_OnSuccess_SavesLog() {
+        public void OnSuccess_SavesLog() {
             // Arrange
             var sut = this._getSut();
             var logEntry1 = "1";
@@ -36,7 +36,7 @@ namespace Jail.Tests.DesignClassesTests.RailwayClassesTests {
         }
 
         [Test]
-        public void Test_Begin_WithCollection() {
+        public void Begin_WithCollection() {
             // Arrange
             var sut = this._getSut();
             var collection = new List<int> { 1, 2, };
@@ -51,7 +51,7 @@ namespace Jail.Tests.DesignClassesTests.RailwayClassesTests {
         }
 
         [Test]
-        public void Test_Begin_WithCollection_Fail() {
+        public void Begin_WithCollection_Fail() {
             // Arrange
             var sut = this._getSut();
             var collection = new List<Obj> { new Obj(), new Obj(), };
@@ -80,7 +80,7 @@ namespace Jail.Tests.DesignClassesTests.RailwayClassesTests {
         }
 
         [Test]
-        public void Test_BeginAndCompose() {
+        public void BeginAndCompose() {
             // Arrange
             var firstValue = 1;
             var secondValue = 2;
@@ -100,7 +100,7 @@ namespace Jail.Tests.DesignClassesTests.RailwayClassesTests {
         }
 
         [Test]
-        public void Test_BeginAndCompose_Fail() {
+        public void BeginAndCompose_Fail() {
             // Arrange
             var message = "Error";
             var secondValue = 2;
@@ -119,7 +119,7 @@ namespace Jail.Tests.DesignClassesTests.RailwayClassesTests {
         }
 
         [Test]
-        public void Test_OnSuccessCompose_ValueType() {
+        public void OnSuccessCompose_ValueType() {
             // Arrange
             var firstValue = 1;
             var secondValue = 2;
@@ -139,7 +139,7 @@ namespace Jail.Tests.DesignClassesTests.RailwayClassesTests {
         }
 
         [Test]
-        public void Test_OnSuccessCompose_ValueType_Fail() {
+        public void OnSuccessCompose_ValueType_Fail() {
             // Arrange
             var message = "Error";
             var secondValue = 2;
@@ -158,7 +158,7 @@ namespace Jail.Tests.DesignClassesTests.RailwayClassesTests {
         }
 
         [Test]
-        public void Test_OnSuccessCompose_ReferenceType() {
+        public void OnSuccessCompose_ReferenceType() {
             // Arrange
             var firstValue = 1;
             var secondValue = 2;
@@ -178,7 +178,7 @@ namespace Jail.Tests.DesignClassesTests.RailwayClassesTests {
         }
 
         [Test]
-        public void Test_OnSuccessCompose_ReferenceType_Fail() {
+        public void OnSuccessCompose_ReferenceType_Fail() {
             // Arrange
             var message = "Error";
             var secondValue = 2;
@@ -197,7 +197,7 @@ namespace Jail.Tests.DesignClassesTests.RailwayClassesTests {
         }
 
         [Test]
-        public void Test_OnSuccessCompose_ExplicitlyImplementedInterface() {
+        public void OnSuccessCompose_ExplicitlyImplementedInterface() {
             // Arrange
             var eiroe = new ExplicitlyImplementedRoe<int>();
             var eiroeAsInterface = (IResultOrError<int>)eiroe;
@@ -215,7 +215,7 @@ namespace Jail.Tests.DesignClassesTests.RailwayClassesTests {
         }
 
         [Test]
-        public void Test_OnSuccessCompose_ResultOrErrorWithoutPleasePropertyCall() {
+        public void OnSuccessCompose_ResultOrErrorWithoutPleasePropertyCall() {
             // Arrange
             var sut = this._getSut();
             var collection = new[] { 0, 1, };
@@ -233,7 +233,7 @@ namespace Jail.Tests.DesignClassesTests.RailwayClassesTests {
         }
 
         [Test]
-        public void Test_OnSuccessCompose_NotResultOrErrorProperty() {
+        public void OnSuccessCompose_NotResultOrErrorProperty() {
             // Arrange
             var sut = this._getSut();
             var collection = new[] { 0, 1, };

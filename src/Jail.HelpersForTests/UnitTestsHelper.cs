@@ -618,19 +618,43 @@ namespace Jail.HelpersForTests {
         }
     }
 
+    /// <summary>
+    /// Information about the type argument.
+    /// </summary>
     public interface ITypeArgumentContext {
+        /// <summary>
+        /// The type argument.
+        /// </summary>
         Type TypeArgument { get; }
-        
+
+        /// <summary>
+        /// Constraints of the type argument.
+        /// </summary>        
         Type[] TypeConstraints { get; } 
         
+        /// <summary>
+        /// Special attributes of the type arguments.
+        /// </summary>
         GenericParameterAttributes GenericParameterAttributes { get; }
     }
 
+    /// <summary>
+    /// Information about the type argument of some generic type.
+    /// </summary>
     public interface ITypeArgumentContextForType : ITypeArgumentContext {
+        /// <summary>
+        /// The definition of the type containing the type argument.
+        /// </summary>
         Type GenericTypeDefinition { get; }
     }
 
+    /// <summary>
+    /// Information about the type argument of some generic method.
+    /// </summary>
     public interface ITypeArgumentContextForMethod : ITypeArgumentContext {
+        /// <summary>
+        /// The definition of the method containing the type argument.
+        /// </summary>
         MethodInfo GenericMethodDefinition { get; }
     }
 }

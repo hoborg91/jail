@@ -8,7 +8,7 @@ namespace Jail.Tests.CommonClassesTests {
         #region IsNullOrWhiteSpace
 
         [Test]
-        public void Test_IsNullOrWhiteSpace_Null() {
+        public void IsNullOrWhiteSpace_Null() {
             // Arrange
             string s = null;
 
@@ -21,7 +21,7 @@ namespace Jail.Tests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_IsNullOrWhiteSpace_Empty() {
+        public void IsNullOrWhiteSpace_Empty() {
             // Arrange
             string s = string.Empty;
 
@@ -34,7 +34,7 @@ namespace Jail.Tests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_IsNullOrWhiteSpace_WhiteSpaces() {
+        public void IsNullOrWhiteSpace_WhiteSpaces() {
             // Arrange
             string s = "   ";
 
@@ -47,7 +47,7 @@ namespace Jail.Tests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_IsNullOrWhiteSpace_NotEmpty() {
+        public void IsNullOrWhiteSpace_NotEmpty() {
             // Arrange
             string s = "1";
 
@@ -64,7 +64,7 @@ namespace Jail.Tests.CommonClassesTests {
         #region IsNullOrEmpty
 
         [Test]
-        public void Test_IsNullOrEmpty_Null() {
+        public void IsNullOrEmpty_Null() {
             // Arrange
             string s = null;
 
@@ -77,7 +77,7 @@ namespace Jail.Tests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_IsNullOrEmpty_Empty() {
+        public void IsNullOrEmpty_Empty() {
             // Arrange
             string s = string.Empty;
 
@@ -90,7 +90,7 @@ namespace Jail.Tests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_IsNullOrEmpty_WhiteSpaces() {
+        public void IsNullOrEmpty_WhiteSpaces() {
             // Arrange
             string s = "   ";
 
@@ -103,7 +103,7 @@ namespace Jail.Tests.CommonClassesTests {
         }
 
         [Test]
-        public void Test_IsNullOrEmpty_NotEmpty() {
+        public void IsNullOrEmpty_NotEmpty() {
             // Arrange
             string s = "1";
 
