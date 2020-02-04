@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CilTests.CommonClassesTests {
+namespace Jail.Tests.CommonClassesTests {
     [TestFixture]
     public class CycleTests {
         [Test]

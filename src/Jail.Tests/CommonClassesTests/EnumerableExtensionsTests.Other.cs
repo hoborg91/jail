@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CilTests.CommonClassesTests {
+namespace Jail.Tests.CommonClassesTests {
     [TestFixture]
     public partial class EnumerableExtensionsTests {
         #region IsEmpty

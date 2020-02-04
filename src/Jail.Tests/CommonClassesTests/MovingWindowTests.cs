@@ -4,7 +4,7 @@ using System.Linq;
 using Jail.Common;
 using NUnit.Framework;
 
-namespace CilTests.CommonClassesTests {
+namespace Jail.Tests.CommonClassesTests {
     [TestFixture]
     public class MovingWindowTests {
         private IMovingWindow<T> _makeSut<T>(

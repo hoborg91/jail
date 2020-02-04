@@ -3,7 +3,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace CilTests.CommonClassesTests {
+namespace Jail.Tests.CommonClassesTests {
     [TestFixture]
     public partial class DictionaryExtensionsTests {
         [Test]
