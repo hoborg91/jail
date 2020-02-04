@@ -9,10 +9,15 @@ environment:
   COVERALLS_REPO_TOKEN:
     secure: Psow7sbo6WQ8HuBCgT7YsIDe+WwpCy8jNM1NhZeWfni2jYoDbbhAuDTiy+nT1D3J
 build_script:
-- cmd: dotnet build src\Jail.sln -c Release
+- cmd:
+    dotnet build src\Jail\Jail.csproj -c Release
+    
+    dotnet build src\Jail.Design\Jail.Design.csproj -c Release
+    
+    dotnet build src\Jail.HelpersForTests\Jail.HelpersForTests.csproj -c Release
 test_script:
 - ps: >-
-    dotnet tool install --global coverlet.console
+    dotnet tool install -g coverlet.console
 
     dotnet tool install -g coveralls.net --version 1.0.0
 
