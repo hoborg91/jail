@@ -5,9 +5,12 @@ I have decided to place it in a remote repository and make a NuGet package to be
 I do not suppose that someone else might find this usefull. But if yes, then use it like you want and like MIT license suggest.
 
 Projects are being distributed as ordinary NuGet packages:
-* [Jail](https://www.nuget.org/packages/Jail/), 
-* [Jail.Design](https://www.nuget.org/packages/Jail.Design/), 
-* [Jail.HelpersForTests](https://www.nuget.org/packages/Jail.HelpersForTests/).
+
+<img src="https://raw.githubusercontent.com/hoborg91/jail/master/icons/Jail.png" alt="[Jail]" width="14"/> [Jail](https://www.nuget.org/packages/Jail/),
+
+<img src="https://raw.githubusercontent.com/hoborg91/jail/master/icons/Jail.Design.png" alt="[Jail]" width="14"/> [Jail.Design](https://www.nuget.org/packages/Jail.Design/), 
+
+<img src="https://raw.githubusercontent.com/hoborg91/jail/master/icons/Jail.HelpersForTests.png" alt="[Jail]" width="14"/> [Jail.HelpersForTests](https://www.nuget.org/packages/Jail.HelpersForTests/).
 
 Formerly these packages were known as one package [Cil](https://www.nuget.org/packages/Cil/).
 One beatiful day its source code has been moved from [Bitbucket](https://bitbucket.org/hoborg91/cil) to [GitHub](https://github.com/hoborg91/jail) and splitted into parts (each part for different purpose).
