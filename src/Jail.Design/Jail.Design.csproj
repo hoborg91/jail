@@ -8,7 +8,7 @@
     <Description>Just Another Infrastructure Library. Facilitates some interesting design and architecture practices.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/hoborg91/jail</PackageProjectUrl>
-    <PackageIconUrl></PackageIconUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/hoborg91/jail/master/icons/Jail.Design.png</PackageIconUrl>
     <PackageTags>infrastructure common design architecture</PackageTags>
     <Copyright>Copyright 2020</Copyright>
     <PackageReleaseNotes></PackageReleaseNotes>

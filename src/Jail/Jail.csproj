@@ -8,7 +8,7 @@
     <Description>Just Another Infrastructure Library. Contains some useful types and methods.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/hoborg91/jail</PackageProjectUrl>
-    <PackageIconUrl></PackageIconUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/hoborg91/jail/master/icons/Jail.png</PackageIconUrl>
     <PackageTags>infrastructure common</PackageTags>
     <Copyright>Copyright 2020</Copyright>
     <PackageReleaseNotes></PackageReleaseNotes>
