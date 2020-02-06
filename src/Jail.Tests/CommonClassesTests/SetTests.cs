@@ -60,9 +60,9 @@ namespace Jail.Tests.CommonClassesTests {
             var sut = new Set<int>(mock.Object);
 
             var argContains = -100;
-            var argCopyTo_0 = Array.Empty<int>();
+            var argCopyTo_0 = new int[0];
             var argCopyTo_1 = 0;
-            var iEnumerable = Array.Empty<int>();
+            var iEnumerable = new int[0];
             var argRemove = -10;
 
             // Act

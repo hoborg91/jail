@@ -571,7 +571,7 @@ namespace Jail.HelpersForTests {
                 if (returnType.GetGenericTypeDefinition() == typeof(IEnumerable<>)) {
                     enumerator = returnType
                         .GetMethod(nameof(IEnumerable<object>.GetEnumerator))
-                        .Invoke(returnedValue, Array.Empty<object>());
+                        .Invoke(returnedValue, Infrastructure<object>.EmptyArray());
                 } else if (returnType.GetGenericTypeDefinition() == typeof(IEnumerator<>)) {
                     enumerator = returnedValue;
                 }
@@ -579,7 +579,7 @@ namespace Jail.HelpersForTests {
                 if (returnType == typeof(IEnumerable)) {
                     enumerator = returnType
                         .GetMethod(nameof(IEnumerable.GetEnumerator))
-                        .Invoke(returnedValue, Array.Empty<object>());
+                        .Invoke(returnedValue, Infrastructure<object>.EmptyArray());
                 } else if (returnType == typeof(IEnumerator)) {
                     enumerator = returnedValue;
                 }
@@ -590,7 +590,7 @@ namespace Jail.HelpersForTests {
 
             typeof(IEnumerator)
                 .GetMethod(nameof(IEnumerator.MoveNext))
-                .Invoke(enumerator, Array.Empty<object>());
+                .Invoke(enumerator, Infrastructure<object>.EmptyArray());
         }
 
         #endregion Test methods for null arguments check

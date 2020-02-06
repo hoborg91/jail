@@ -209,7 +209,7 @@ namespace Jail.Tests.CommonClassesTests {
             var sut = this._makeSut(2, sequence);
 
             // Act
-            sut.ExtendTo(Array.Empty<int>());
+            sut.ExtendTo(new int[0]);
             var snapshot = sut.GetSnapshot();
             var exhausted = sut.IsExhausted();
 

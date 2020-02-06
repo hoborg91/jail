@@ -134,7 +134,7 @@ namespace Jail.Tests.CommonClassesTests {
         [Test]
         public void JoinBy_Empty() {
             // Arrange, Act
-            var result = EnumerableExtensions.JoinBy(Array.Empty<string>(), ",");
+            var result = EnumerableExtensions.JoinBy(new string[0], ",");
 
             // Assert
             Assert.AreEqual(string.Empty, result);
@@ -294,7 +294,7 @@ namespace Jail.Tests.CommonClassesTests {
         public void SplitIntoBatches_ThrowsOnZeroBatchSize() {
             // Arrange, Act, Assert
             Assert.Throws<ArgumentOutOfRangeException>(() => {
-                EnumerableExtensions.SplitIntoBatches(Array.Empty<int>(), 0)
+                EnumerableExtensions.SplitIntoBatches(new int[0], 0)
                     .ToList();
             });
         }
@@ -320,7 +320,7 @@ namespace Jail.Tests.CommonClassesTests {
         [Test]
         public void SplitIntoBatches_EmptyInput() {
             // Arrange
-            var inputCollection = Array.Empty<int>();
+            var inputCollection = new int[0];
             var expectedBatches = new int[0][];
 
             // Act
