@@ -8,7 +8,7 @@
     <Description>Just Another Infrastructure Library. Facilitates some interesting design and architecture practices.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/hoborg91/jail</PackageProjectUrl>
-    <PackageIcon>..\icons\Jail.Design.png</PackageIcon>
+    <PackageIcon>..\..\icons\Jail.Design.png</PackageIcon>
     <PackageTags>infrastructure common design architecture</PackageTags>
     <Copyright>Copyright 2020</Copyright>
     <PackageReleaseNotes></PackageReleaseNotes>
@@ -23,7 +23,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\icons\Jail.Design.png" Pack="true" PackagePath="\"/>
+    <None Include="..\..\icons\Jail.Design.png" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
 </Project>
