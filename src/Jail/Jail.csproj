@@ -8,7 +8,7 @@
     <Description>Just Another Infrastructure Library. Contains some useful types and methods.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/hoborg91/jail</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/hoborg91/jail/master/icons/Jail.png</PackageIconUrl>
+    <PackageIcon>..\icons\Jail.png</PackageIcon>
     <PackageTags>infrastructure common</PackageTags>
     <Copyright>Copyright 2020</Copyright>
     <PackageReleaseNotes></PackageReleaseNotes>
@@ -21,5 +21,9 @@
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>Jail.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\icons\Jail.png" Pack="true" PackagePath="\"/>
+  </ItemGroup>
 
 </Project>

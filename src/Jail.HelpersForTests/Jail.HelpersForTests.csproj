@@ -8,7 +8,7 @@
     <Description>Just Another Infrastructure Library. Facilitates unit (and possibly integration) testing.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/hoborg91/jail</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/hoborg91/jail/master/icons/Jail.HelpersForTests.png</PackageIconUrl>
+    <PackageIcon>..\icons\Jail.HelpersForTests.png</PackageIcon>
     <PackageTags>infrastructure common testing unit</PackageTags>
     <Copyright>Copyright 2020</Copyright>
     <PackageReleaseNotes></PackageReleaseNotes>
@@ -21,5 +21,9 @@
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>Jail.HelpersForTests.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\icons\Jail.HelpersForTests.png" Pack="true" PackagePath="\"/>
+  </ItemGroup>
 
 </Project>
