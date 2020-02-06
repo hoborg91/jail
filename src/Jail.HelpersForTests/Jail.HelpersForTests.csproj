@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461;net45</TargetFrameworks>
-    <Version>0.0.0.5</Version>
+    <Version>1.0.0.0</Version>
     <Authors>George Minashin</Authors>
     <Company />
     <Description>Just Another Infrastructure Library. Facilitates unit (and possibly integration) testing.</Description>
@@ -12,7 +12,7 @@
     <PackageTags>infrastructure common testing unit</PackageTags>
     <Copyright>Copyright 2020</Copyright>
     <PackageReleaseNotes></PackageReleaseNotes>
-    <AssemblyVersion>0.0.0.5</AssemblyVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
