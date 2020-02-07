@@ -20,10 +20,14 @@ All public methods (including constructors) must check their parameters.
 
 Every internal or public type should be placed in its own file.
 
-2. Source control.
+2. Version control.
 
-The source control system is "GIT". The main repository is hosted on the "GitHub" web site.
+The version control system is "GIT". The main repository is hosted on the "GitHub" web site.
+
+One should work in the "develop" branch or in the specific "feature" branches. Once it is necessary to publish a new version one should merge the "develop" branch into the "master" branch and increment the version as described in the "Development" section of the current document.
 
 3. Delivery.
 
 Clients can obtain the result DLLs via "NuGet" package manager. Currently the packages with the DLLs is hosted on the "nuget.org" web site. The packages are being published automatically via the "ci.appveyor.com" web site which provides continuous integration and delivery capabilities. The integration and delivery process is being configured via the "appveyor.yml" file.
+
+Once it is necessary to publish a new version one should merge the "develop" branch into the "master" as described in the "Version control" section of the current document. The first three parts of the version are being incremented according to the SemVer. The fourth part of the version is being incremented automatically by the "ci.appveyor.com" during the build process; see its configuration in the "appveyor.yml" file. In the repository the fourth path of the version must always be equal to 0.
