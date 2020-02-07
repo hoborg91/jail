@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461;net45</TargetFrameworks>
-    <Version>1.0.0.0</Version>
+    <Version>1.0.1.0</Version>
     <Authors>George Minashin</Authors>
     <Company />
     <Description>Just Another Infrastructure Library. Facilitates some interesting design and architecture practices.</Description>
@@ -12,7 +12,7 @@
     <PackageTags>infrastructure common design architecture</PackageTags>
     <Copyright>Copyright 2020</Copyright>
     <PackageReleaseNotes></PackageReleaseNotes>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
