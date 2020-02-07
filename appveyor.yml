@@ -11,11 +11,17 @@ environment:
     secure: Psow7sbo6WQ8HuBCgT7YsIDe+WwpCy8jNM1NhZeWfni2jYoDbbhAuDTiy+nT1D3J
 build_script:
 - ps: >-
-    (Get-Content src\Jail\Jail.csproj).replace('.0</', ('.' + $env:APPVEYOR_BUILD_NUMBER + '</')) | Set-Content src\Jail\Jail.csproj
+    (Get-Content src\Jail\Jail.csproj).replace('.0</Version', ('.' + $env:APPVEYOR_BUILD_NUMBER + '</Version')) | Set-Content src\Jail\Jail.csproj
     
-    (Get-Content src\Jail.Design\Jail.Design.csproj).replace('.0</', ('.' + $env:APPVEYOR_BUILD_NUMBER + '</')) | Set-Content src\Jail.Design\Jail.Design.csproj
+    (Get-Content src\Jail\Jail.csproj).replace('.0</AssemblyVersion', ('.' + $env:APPVEYOR_BUILD_NUMBER + '</AssemblyVersion')) | Set-Content src\Jail\Jail.csproj
     
-    (Get-Content src\Jail.HelpersForTests\Jail.HelpersForTests.csproj).replace('.0</', ('.' + $env:APPVEYOR_BUILD_NUMBER + '</')) | Set-Content src\Jail.HelpersForTests\Jail.HelpersForTests.csproj
+    (Get-Content src\Jail.Design\Jail.Design.csproj).replace('.0</Version', ('.' + $env:APPVEYOR_BUILD_NUMBER + '</Version')) | Set-Content src\Jail.Design\Jail.Design.csproj
+    
+    (Get-Content src\Jail.Design\Jail.Design.csproj).replace('.0</AssemblyVersion', ('.' + $env:APPVEYOR_BUILD_NUMBER + '</AssemblyVersion')) | Set-Content src\Jail.Design\Jail.Design.csproj
+    
+    (Get-Content src\Jail.HelpersForTests\Jail.HelpersForTests.csproj).replace('.0</Version', ('.' + $env:APPVEYOR_BUILD_NUMBER + '</Version')) | Set-Content src\Jail.HelpersForTests\Jail.HelpersForTests.csproj
+    
+    (Get-Content src\Jail.HelpersForTests\Jail.HelpersForTests.csproj).replace('.0</AssemblyVersion', ('.' + $env:APPVEYOR_BUILD_NUMBER + '</AssemblyVersion')) | Set-Content src\Jail.HelpersForTests\Jail.HelpersForTests.csproj
     
     dotnet build src\Jail\Jail.csproj -c Release
     
